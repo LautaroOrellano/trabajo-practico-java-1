@@ -1,4 +1,4 @@
-package clases.entidades.users;
+package models.users;
 
 import enums.Rol;
 

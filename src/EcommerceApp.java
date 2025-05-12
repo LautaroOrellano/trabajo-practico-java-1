@@ -1,4 +1,4 @@
-import clases.entidades.users.User;
+import models.users.User;
 import service.AuthService;
 import service.MenuService;
 import repository.UserRepository;

@@ -1,8 +1,6 @@
-package clases.entidades.users;
+package models.users;
 
 import enums.Rol;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class Admin extends User {
 

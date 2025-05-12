@@ -1,8 +1,8 @@
 package ui.controllers;
 
-import clases.entidades.users.Admin;
-import clases.entidades.users.Customer;
-import clases.entidades.users.User;
+import models.users.Admin;
+import models.users.Customer;
+import models.users.User;
 import service.AuthService;
 import enums.Rol;
 import javafx.geometry.Insets;

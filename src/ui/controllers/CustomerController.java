@@ -1,6 +1,6 @@
 package ui.controllers;
 
-import clases.entidades.users.User;
+import models.users.User;
 import service.MenuService;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;

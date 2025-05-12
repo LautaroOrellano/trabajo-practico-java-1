@@ -1,6 +1,6 @@
 package interfaces;
 
-import clases.entidades.Product;
+import models.Product;
 
 public interface IUserManager {
 

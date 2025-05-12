@@ -1,6 +1,6 @@
 package service;
 
-import clases.entidades.Product;
+import models.Product;
 import exceptions.ProductNotFoundException;
 import interfaces.IProducManager;
 import interfaces.IRepository;

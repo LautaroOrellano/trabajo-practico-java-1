@@ -1,8 +1,8 @@
 package repository;
 
-import clases.entidades.users.Admin;
-import clases.entidades.users.Customer;
-import clases.entidades.users.User;
+import models.users.Admin;
+import models.users.Customer;
+import models.users.User;
 import interfaces.IRepository;
 import org.json.JSONArray;
 import org.json.JSONException;

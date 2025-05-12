@@ -1,9 +1,9 @@
 package service;
 
-import clases.entidades.Cart;
-import clases.entidades.Order;
-import clases.entidades.Product;
-import clases.entidades.users.User;
+import models.Cart;
+import models.Order;
+import models.Product;
+import models.users.User;
 import exceptions.ItemOutOfStockException;
 import interfaces.IOrderManager;
 import repository.OrderRepository;
