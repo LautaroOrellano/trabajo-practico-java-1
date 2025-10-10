@@ -11,12 +11,13 @@ public class Admin extends User {
     @Override
     public void getMenu() {
         System.out.println("Menu Administrador: ");
-        System.out.println("[1] Crear Producto");
-        System.out.println("[2] Modificar Producto");
-        System.out.println("[3] Ver ventas");
-        System.out.println("[4] Buscar venta");
-        System.out.println("[5] Ver usuarios");
-        System.out.println("[6] Buscar usuarios");
+        System.out.println("[1] Crear producto");
+        System.out.println("[2] Ver todos los productos");
+        System.out.println("[3] Modificar producto");
+        System.out.println("[4] Ver ventas");
+        System.out.println("[5] Buscar venta");
+        System.out.println("[6] Ver usuarios");
+        System.out.println("[7] Buscar usuarios");
     }
 
     @Override

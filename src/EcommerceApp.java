@@ -18,13 +18,13 @@ public class EcommerceApp {
     private Scanner scanner = new Scanner(System.in);
 
     public EcommerceApp() {
-        authManager.register(new Admin("Lautaro", "Orellano", "admin@mail.com", "1234"));
+        authManager.register(new Admin("Lautaro", "Orellano", "lautaro@gmail.com", "1234"));
         authManager.register(new Customer("Juan", "Perez", "juan@mail.com", "abcd",
                 12345678L, 123456789L, "Calle Falsa 123", 25));
     }
 
     public void run() {
-        int opcion = 0;
+        User user = null;
 
         do {
             System.out.println("=== Bienvenido a ?? Ecommerce ===");
@@ -35,18 +35,29 @@ public class EcommerceApp {
             System.out.println("Password");
             String password = scanner.nextLine();
 
-            User user = authManager.login(email, password);
+            user = authManager.login(email, password);
 
-            if (user != null) {
-                System.out.println("Login exitoso. Bienvenido " + user.getName());
-                user.getMenu();
-                System.out.println("Elige una opcion correcta.");
-                opcion = scanner.nextInt();
-                menuManager.processOption(user, opcion);
-            } else {
-                System.out.println("Credenciales incorrectas.");
+            if (user == null) {
+                System.out.println("Credenciales incorrectas. Intente nuevamente.");
             }
-        } while (opcion != 0);
+
+        } while (user == null);
+
+        System.out.println("Login exitoso. Bienvenido " + user.getName());
+
+        int option = 0;
+
+        do {
+            user.getMenu();
+            System.out.println("Elige una opcion correcta.");
+            option  = scanner.nextInt();
+            scanner.nextLine();
+
+            menuManager.processOption(user, option);
+
+        } while (option != 0);
+
+        System.out.println("Sesión cerrada.");
 
     }
 }

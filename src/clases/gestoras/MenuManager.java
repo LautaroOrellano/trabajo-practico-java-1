@@ -4,8 +4,11 @@ import clases.entidades.Product;
 import clases.entidades.users.User;
 import enums.Rol;
 
+import java.util.Scanner;
+
 public class MenuManager {
 
+    private Scanner scanner = new Scanner(System.in);
     private ProductManager productManager = new ProductManager();
     private UserManager userManager = new UserManager();
     private OrderManager orderManager = new OrderManager();
@@ -14,12 +17,24 @@ public class MenuManager {
     public void processOption(User user, int option) {
         if (user.getRol() == Rol.ADMIN) {
             switch (option) {
-                case 1 -> productManager.createProduct();
-                case 2 -> productManager.updateProduct();
-                case 3 -> orderManager.getOrder();
-                case 4 -> orderManager.searchOrder();
-                case 5 -> userManager.getAllUsers();
-                case 6 -> userManager.searchUser();
+                case 1 -> {
+                    System.out.println("Nombre del producto");
+                    String name = scanner.nextLine();
+                    System.out.println("Descripcion del producto");
+                    String description = scanner.nextLine();
+                    System.out.println("Stock del producto");
+                    int stock = scanner.nextInt();
+                    scanner.nextLine();
+                    productManager.createProduct(name, description, stock);
+                }
+                case 2 -> {
+                    productManager.getAllProducts();
+                }
+                case 3 -> productManager.updateProduct();
+                case 4 -> orderManager.getOrder();
+                case 5 -> orderManager.searchOrder();
+                case 6 -> userManager.getAllUsers();
+                case 7 -> userManager.searchUser();
                 default -> System.out.println("Opcion incorrecta.");
             }
         } else if (user.getRol() == Rol.CUSTOMER) {
