@@ -1,6 +1,6 @@
 package clases.entidades;
 
-public class User {
+public class User extends Rol {
 
     public User() {
     }

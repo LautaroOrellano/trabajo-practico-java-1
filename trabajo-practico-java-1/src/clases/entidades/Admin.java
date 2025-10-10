@@ -1,4 +1,4 @@
 package clases.entidades;
 
-public class Admin {
+public class Admin extends Rol{
 }
