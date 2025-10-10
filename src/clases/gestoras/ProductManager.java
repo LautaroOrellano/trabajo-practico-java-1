@@ -1,38 +1,53 @@
 package clases.gestoras;
 
 import clases.entidades.Product;
+import interfaces.IProducManager;
+import interfaces.IRepository;
+import repository.ProductRepository;
 
-import java.util.ArrayList;
-import java.util.List;
+public class ProductManager implements IProducManager {
+    private IRepository<Product> repository;
 
-public class ProductManager {
+    public ProductManager () {
+        this.repository = new ProductRepository();
+    }
 
-    public List<Product> products = new ArrayList<>();
+    public ProductManager(ProductRepository repository) {
+        this.repository = repository;
+    }
 
+    @Override
     public void createProduct(String name, String description, int stock) {
+
         Product product = new Product(name, description, stock);
         if (!name.isEmpty() && !description.isEmpty() && stock > 0) {
-            products.add(product);
-            System.out.println("Producto creado con exito");
+            repository.add(product);
+            System.out.println("Producto " + name + " creado con exito");
         } else {
             System.out.println("Hubo un problema al crear el producto");
         }
 
     }
 
+    @Override
+    public void searchProduct(int id) {
+    }
+
+    @Override
     public void getAllProducts() {
-        for (Product product : products) {
+        for (Product product : repository.getAll()) {
             System.out.println(product);
         }
     }
 
+    @Override
     public void updateProduct() {
 
     }
 
-
-
-    public void searchProduct() {
+    @Override
+    public void deleteProduct(int id) {
 
     }
+
 }
