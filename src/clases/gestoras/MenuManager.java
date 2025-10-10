@@ -40,7 +40,7 @@ public class MenuManager {
         } else if (user.getRol() == Rol.CUSTOMER) {
             switch (option) {
                 case 1 -> productManager.getAllProducts();
-                case 2 -> productManager.searchProduct();
+                case 2 -> productManager.searchProduct(1);
                 case 3 -> orderManager.generateOrder();
                 case 4 -> orderManager.getMeOrder();
                 case 5 -> shopManager.getShop();
