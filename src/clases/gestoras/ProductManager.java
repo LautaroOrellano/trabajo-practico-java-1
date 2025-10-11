@@ -29,17 +29,11 @@ public class ProductManager implements IProducManager {
 
     @Override
     public void searchProduct(int id) {
-        Product found = repository.getAll()
-                .stream()
-                .filter(p -> p.getId() == id)
-                .findFirst()
-                .orElse(null);
-
-        if (found != null) {
-            System.out.println(found);
-        } else {
-            System.out.println("Producto con ID " + id + " no encontrado.");
-        }
+        repository.findById(id)
+                .ifPresentOrElse(
+                        product -> System.out.println(product),
+                        () -> System.out.println("Producto con ID " + id + " no encontrado.")
+                );
     }
 
     @Override
@@ -71,12 +65,8 @@ public class ProductManager implements IProducManager {
 
     @Override
     public void deleteProduct(int id) {
-        boolean removed = repository.getAll().removeIf(p -> p.getId() == id);
-        if (removed) {
-            System.out.println("Producto eliminado con exito");
-        } else {
-            System.out.println("Producto no encontrado");
-        }
+       boolean removed = repository.removeById(id);
+        System.out.println(removed ? "Producto eliminado con exito." : "Producto no encontrado.");
     }
 
 }
