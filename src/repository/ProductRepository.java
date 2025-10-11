@@ -23,6 +23,13 @@ public class ProductRepository implements IRepository<Product> {
     }
 
     @Override
+    public Optional<Product> findByName(String name) {
+        return products.stream()
+                       .filter(p -> p.getName().equalsIgnoreCase(name))
+                       .findFirst();
+    }
+
+    @Override
     public List<Product> getAll() {
         return products;
     }

@@ -1,6 +1,5 @@
 package clases.gestoras;
 
-import clases.entidades.CartItem;
 import clases.entidades.Shop;
 
 import java.util.ArrayList;

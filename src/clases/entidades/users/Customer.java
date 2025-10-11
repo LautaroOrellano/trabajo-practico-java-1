@@ -50,7 +50,7 @@ public class Customer extends User {
         return address;
     }
 
-    public void setAddres(String addres) {
+    public void setAddress(String address) {
         this.address = address;
     }
 

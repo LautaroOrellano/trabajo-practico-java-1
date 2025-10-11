@@ -4,6 +4,7 @@ import clases.entidades.Product;
 import clases.entidades.users.User;
 import enums.Rol;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class MenuManager {
@@ -23,10 +24,13 @@ public class MenuManager {
                     String name = scanner.nextLine();
                     System.out.println("Descripcion del producto");
                     String description = scanner.nextLine();
+                    System.out.println("Precio del producto");
+                    double price = scanner.nextDouble();
+                    scanner.nextLine();
                     System.out.println("Stock del producto");
                     int stock = scanner.nextInt();
                     scanner.nextLine();
-                    productManager.createProduct(name, description, stock);
+                    productManager.createProduct(name, description, price, stock);
                 }
                 case 2 -> {
                     // Buscar un producto por id
@@ -48,10 +52,13 @@ public class MenuManager {
                     String name = scanner.nextLine();
                     System.out.println("Nueva descripcion");
                     String description = scanner.nextLine();
+                    System.out.println("Stock del producto");
+                    double price = scanner.nextDouble();
+                    scanner.nextLine();
                     System.out.println("Nuevo stock");
                     int stock = scanner.nextInt();
                     scanner.nextLine();
-                    productManager.updateProduct(id, name, description, stock);
+                    productManager.updateProduct(id, name, description, price, stock);
                 }
                 case 5 -> {
                     // Eliminar un producto
@@ -60,29 +67,35 @@ public class MenuManager {
                     scanner.nextLine();
                     productManager.deleteProduct(id);
                 }
-
-
-                case 6 -> orderManager.getOrder();
+                case 6 -> orderManager.getAllOrder();
                 case 7 -> orderManager.searchOrder();
-                case 8 -> userManager.getAllUsers();
-                case 9 -> userManager.searchUser();
+                case 8 -> orderManager.removeOrder();
+                case 9 -> userManager.getAllUsers();
+                case 10 -> userManager.searchUser();
                 case 0 -> System.out.printf("Hasta pronto");
                 default -> System.out.println("Opcion incorrecta.");
             }
         } else if (user.getRol() == Rol.CUSTOMER) {
             switch (option) {
-                case 1 -> productManager.getAllProducts();
+                case 1 -> {
+                    // Obtener todos los productos
+                    productManager.getAllProducts();
+                }
                 case 2 -> {
+                    // Buscar producto por id
                     System.out.println("Id del producto a buscar");
                     int id = scanner.nextInt();
                     scanner.nextLine();
                     productManager.searchProduct(id);
                 }
-                case 3 -> orderManager.generateOrder();
-                case 4 -> orderManager.getMeOrder();
-                case 5 -> shopManager.getShop();
-                case 6 -> userManager.getMeCart();
-                case 7 -> userManager.addMeCart();
+                case 3 -> shopManager.getShop();
+                case 4 -> userManager.getMeCart();
+                case 5 -> userManager.addMeCart();
+                case 6 -> {
+                    orderManager.generateOrderFromCart(user);
+                }
+                case 7 -> orderManager.getMeOrder();
+                case 0 -> System.out.printf("Hasta pronto");
                 default -> System.out.println("Opcion incorrecta.");
             }
         }

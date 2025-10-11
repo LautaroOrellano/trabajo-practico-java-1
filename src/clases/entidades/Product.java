@@ -9,15 +9,17 @@ public class Product {
     private int id;
     private String name;
     private String description;
+    private Double price;
     private int stock;
 
     public Product() {
     }
 
-    public Product(String name, String description, int stock) {
+    public Product(String name, String description, Double price, int stock) {
         this.id = AUTO_INCREMENT++;
         this.name = name;
         this.description = description;
+        this.price = price;
         this.stock = stock;
     }
 
@@ -57,6 +59,14 @@ public class Product {
         this.description = description;
     }
 
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
     public int getStock() {
         return stock;
     }
@@ -74,6 +84,7 @@ public class Product {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", price=" + price +
                 ", stock=" + stock +
                 '}';
     }
