@@ -17,12 +17,12 @@ public class ProductManager implements IProducManager {
     }
 
     @Override
-    public void createProduct(String name, String description, int stock) {
+    public void createProduct(String name, String description, double price, int stock) {
         if (name == null || name.isEmpty() || description == null || description.isEmpty() || stock <= 0) {
             System.out.println("Datos incorrectos para crear el producto. ");
             return;
         }
-        Product product = new Product(name, description, stock);
+        Product product = new Product(name, description, price, stock);
         repository.add(product);
         System.out.println("Producto " + name + " creado con exito");
     }
@@ -46,7 +46,7 @@ public class ProductManager implements IProducManager {
     }
 
     @Override
-    public void updateProduct(int id, String name, String description, int stock) {
+    public void updateProduct(int id, String name, String description, double price, int stock) {
         Product found = repository.getAll()
                 .stream()
                 .filter(p -> p.getId() == id)
