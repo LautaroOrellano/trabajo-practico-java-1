@@ -5,7 +5,7 @@ import java.util.Optional;
 
 public interface IRepository<T> {
     void add(T item);
-    void remove(T item);
     Optional<T> findById(int id);
     List<T> getAll();
+    boolean removeById(int id);
 }

@@ -28,7 +28,7 @@ public class ProductRepository implements IRepository<Product> {
     }
 
     @Override
-    public void remove(Product item) {
-        products.remove(item);
+    public boolean removeById(int id) {
+        return products.removeIf(p -> p.getId() == id);
     }
 }

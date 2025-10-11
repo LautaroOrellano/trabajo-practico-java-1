@@ -57,7 +57,7 @@ public class EcommerceApp {
 
         } while (option != 0);
 
-        System.out.println("Sesión cerrada.");
+        System.out.println("\nSesión cerrada.");
 
     }
 }

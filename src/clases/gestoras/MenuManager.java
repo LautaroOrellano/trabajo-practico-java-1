@@ -18,6 +18,7 @@ public class MenuManager {
         if (user.getRol() == Rol.ADMIN) {
             switch (option) {
                 case 1 -> {
+                    // Crear un producto
                     System.out.println("Nombre del producto");
                     String name = scanner.nextLine();
                     System.out.println("Descripcion del producto");
@@ -28,9 +29,18 @@ public class MenuManager {
                     productManager.createProduct(name, description, stock);
                 }
                 case 2 -> {
-                    productManager.getAllProducts();
+                    // Buscar un producto por id
+                    System.out.println("Id del producto a buscar");
+                    int id = scanner.nextInt();
+                    scanner.nextLine();
+                    productManager.searchProduct(id);
                 }
                 case 3 -> {
+                    // Listar todos los productos
+                    productManager.getAllProducts();
+                }
+                case 4 -> {
+                    // Actualizar un producto completo
                     System.out.println("Ingrese el id del producto a actualizar");
                     int id = scanner.nextInt();
                     scanner.nextLine();
@@ -43,16 +53,31 @@ public class MenuManager {
                     scanner.nextLine();
                     productManager.updateProduct(id, name, description, stock);
                 }
-                case 4 -> orderManager.getOrder();
-                case 5 -> orderManager.searchOrder();
-                case 6 -> userManager.getAllUsers();
-                case 7 -> userManager.searchUser();
+                case 5 -> {
+                    // Eliminar un producto
+                    System.out.println("Id del producto a eliminar");
+                    int id = scanner.nextInt();
+                    scanner.nextLine();
+                    productManager.deleteProduct(id);
+                }
+
+
+                case 6 -> orderManager.getOrder();
+                case 7 -> orderManager.searchOrder();
+                case 8 -> userManager.getAllUsers();
+                case 9 -> userManager.searchUser();
+                case 0 -> System.out.printf("Hasta pronto");
                 default -> System.out.println("Opcion incorrecta.");
             }
         } else if (user.getRol() == Rol.CUSTOMER) {
             switch (option) {
                 case 1 -> productManager.getAllProducts();
-                case 2 -> productManager.searchProduct(1);
+                case 2 -> {
+                    System.out.println("Id del producto a buscar");
+                    int id = scanner.nextInt();
+                    scanner.nextLine();
+                    productManager.searchProduct(id);
+                }
                 case 3 -> orderManager.generateOrder();
                 case 4 -> orderManager.getMeOrder();
                 case 5 -> shopManager.getShop();
