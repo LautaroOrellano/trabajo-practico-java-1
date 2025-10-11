@@ -1,5 +1,6 @@
 package clases.entidades.users;
 
+import clases.entidades.Cart;
 import enums.Rol;
 
 public abstract class User {
@@ -11,6 +12,7 @@ public abstract class User {
     private String email;
     private String password;
     private Rol rol;
+    private Cart cart;
 
     public User(String name, String lastName, String email, String password, Rol rol) {
         this.id = AUTO_INCREMENT++;
@@ -19,6 +21,7 @@ public abstract class User {
         this.email = email;
         this.password = password;
         this.rol = rol;
+        this.cart = new Cart();
     }
 
     public abstract void getMenu();
@@ -69,6 +72,15 @@ public abstract class User {
 
     public Rol getRol() {
         return rol;
+    }
+
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 
     @Override
