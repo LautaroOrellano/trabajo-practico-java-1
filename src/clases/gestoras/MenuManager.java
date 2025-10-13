@@ -99,23 +99,7 @@ public class MenuManager {
         }
     }
 
-    public Scanner getScanner() {
-        return scanner;
-    }
-
     public ProductManager getProductManager() {
         return productManager;
-    }
-
-    public UserManager getUserManager() {
-        return userManager;
-    }
-
-    public OrderManager getOrderManager() {
-        return orderManager;
-    }
-
-    public ShopManager getShopManager() {
-        return shopManager;
     }
 }
