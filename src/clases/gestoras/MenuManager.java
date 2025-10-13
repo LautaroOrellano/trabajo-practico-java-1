@@ -1,10 +1,8 @@
 package clases.gestoras;
 
-import clases.entidades.Product;
 import clases.entidades.users.User;
 import enums.Rol;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class MenuManager {
@@ -99,5 +97,25 @@ public class MenuManager {
                 default -> System.out.println("Opcion incorrecta.");
             }
         }
+    }
+
+    public Scanner getScanner() {
+        return scanner;
+    }
+
+    public ProductManager getProductManager() {
+        return productManager;
+    }
+
+    public UserManager getUserManager() {
+        return userManager;
+    }
+
+    public OrderManager getOrderManager() {
+        return orderManager;
+    }
+
+    public ShopManager getShopManager() {
+        return shopManager;
     }
 }
