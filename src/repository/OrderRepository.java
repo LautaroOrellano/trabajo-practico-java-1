@@ -37,3 +37,4 @@ public class OrderRepository implements IRepository<Order> {
         return orders.removeIf(o -> o.getId() == id);
     }
 }
+// que cada usuario que compra tenga su lista de ordenes

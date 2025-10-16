@@ -8,6 +8,7 @@ public class Admin extends User {
         super(name, lastName, email, password, Rol.ADMIN);
     }
 
+    // baja o actualizacion como polimorfismo
     @Override
     public void getMenu() {
         System.out.println("Menu Administrador: ");

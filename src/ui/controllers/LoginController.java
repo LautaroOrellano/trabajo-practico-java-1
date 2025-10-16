@@ -25,7 +25,7 @@ public class LoginController {
     public LoginController(MainFX mainApp) {
         this.mainApp = mainApp;
         authManager.register(new Admin("Lautaro", "Orellano", "lautaro@gmail.com", "1234"));
-        authManager.register(new Customer("Juan", "Perez", "fran@gmail.com", "abcd",
+        authManager.register(new Customer("fran", "roldan", "fran@gmail.com", "abcd",
                 12345678L, 123456789L, "Calle Falsa 123", 25));
 
         TextField emailField = new TextField();
