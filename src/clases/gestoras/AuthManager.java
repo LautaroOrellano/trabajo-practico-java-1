@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AuthManager {
-    private List<User> users = new ArrayList<>();
+    private List<User> users;
 
     public AuthManager(List<User> users) {
         this.users = users;
