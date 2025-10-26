@@ -22,18 +22,6 @@ public class Customer extends User {
         this.age = age;
     }
 
-    @Override
-    public void getMenu() {
-        System.out.println("Menu Usuario: ");
-        System.out.println("[1] Ver producto");
-        System.out.println("[2] Buscar producto");
-        System.out.println("[3] Generar orden");
-        System.out.println("[4] Ver mi orden");
-        System.out.println("[5] Ver catalogo");
-        System.out.println("[6] Ver mi carrito");
-        System.out.println("[7] Agregar a mi carrito");
-    }
-
     public long getDni() {
         return dni;
     }

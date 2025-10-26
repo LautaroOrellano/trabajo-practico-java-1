@@ -24,8 +24,6 @@ public abstract class User {
         this.cart = new Cart();
     }
 
-    public abstract void getMenu();
-
     public static int getAutoIncrement() {
         return AUTO_INCREMENT;
     }
