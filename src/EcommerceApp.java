@@ -28,50 +28,32 @@ public class EcommerceApp {
         int option = 0;
 
         do {
-            System.out.println("=== Bienvenido a UTN Ecommerce ===");
-            System.out.println("\nElige una opcion para comenzar");
-            System.out.println("1- Registrarse");
-            System.out.println("2- Iniciar Sesion");
-            System.out.println("0- Exit");
+            // Menu bienvenida
+            menuManager.showWelcomeMenu();
+
             option = scanner.nextInt();
             scanner.nextLine();
 
             switch (option) {
                 case 1 -> {
-                    System.out.println("Sección Registro: ");
-                    System.out.println("Ingrese su nombre");
-                    String name = scanner.nextLine();
-                    System.out.println("Ingrese su apellido");
-                    String lastName = scanner.nextLine();
-                    System.out.println("Ingrese su email");
-                    String email = scanner.nextLine();
-                    System.out.println("Ingrese su password");
-                    String password = scanner.nextLine();
-                    if (name == null || name.isEmpty()) {
-                        System.out.println("No ingreso su nombre, intentelo de nuevo");
-                    } else if (lastName == null || lastName.isEmpty()) {
-                        System.out.println("No ingreso su apellido, intentelo de nuevo");
-                    } else if (email == null || email.isEmpty()) {
-                        System.out.println("No ingreso su email, intentelo de nuevo");
-                    } else if ( password == null || password.isEmpty()) {
-                        System.out.println("No ingreso su contraseña, intentelo de nuevo");
+                    // Seccion registro
+                    user = menuManager.showMenuRegister(scanner);
+
+                    // Registro exitoso
+                    if (user != null) {
+                        authManager.register(user);
+                        System.out.println("\nRegistro exitoso!!. Ya puede iniciar sesion");
                     }
-                    user = new Customer(name, lastName, email, password);
-                    authManager.register(user);
-                    System.out.println("Registro exitoso. Ya puede iniciar sesion");
                     user = null;
                 }
                 case 2 -> {
-                    System.out.println("Sección de login: ");
-                    System.out.println("Email: ");
-                    String email = scanner.nextLine();
-                    System.out.println("Password");
-                    String password = scanner.nextLine();
-                    user = authManager.login(email, password);
+                    // Sección Login
+                    user = menuManager.showMenuLogin(scanner, authManager);
+
                     if (user == null) {
                         System.out.println("Credenciales incorrectas. Intente nuevamente.");
                     } else {
-                        System.out.println("Login exitoso. Bienvenido " + user.getName());
+                        System.out.println("\nLogin exitoso. Bienvenido " + user.getName());
                     }
                 }
                 case 0 -> System.out.println("Saliendo del sistema...");
@@ -79,11 +61,13 @@ public class EcommerceApp {
             }
         } while (user== null && option != 0 );
 
+        // Entrada al menu dependiendo de rol
         if (user != null) {
             int optionMenu = 0;
+
             do {
-                user.getMenu();
-                System.out.println("Elige una opcion correcta.");
+                menuManager.showMenu(user);
+                System.out.println("Elige una opcion correcta");
                 optionMenu = scanner.nextInt();
                 scanner.nextLine();
 
