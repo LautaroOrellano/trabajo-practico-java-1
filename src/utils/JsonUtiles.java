@@ -18,7 +18,7 @@ public class JsonUtiles {
         try {
             return Files.readString(Paths.get(path));
         } catch (IOException e) {
-            return "[]";  // si no existe, devolvemos array vacío para evitar errores al parsear
+            return "[]";
         }
     }
 
