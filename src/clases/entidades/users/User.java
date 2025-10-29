@@ -24,6 +24,7 @@ public abstract class User {
         this.cart = new Cart();
     }
 
+    public abstract void darseDeBaja();
     public static int getAutoIncrement() {
         return AUTO_INCREMENT;
     }
