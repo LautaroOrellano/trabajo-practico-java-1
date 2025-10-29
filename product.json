@@ -1,26 +1,7 @@
-[
-    {
-        "price": 12.49,
-        "name": "teclados",
-        "description": "teclado redragon born",
-        "stock": 123
-    },
-    {
-        "price": 123.45,
-        "name": "teclado",
-        "description": "el mejor teclado",
-        "stock": 12
-    },
-    {
-        "price": 123.4,
-        "name": "teclado",
-        "description": "el mejor",
-        "stock": 1234
-    },
-    {
-        "price": 123,
-        "name": "teclado",
-        "description": "el mejor",
-        "stock": 12
-    }
-]
+[{
+    "price": 123.4,
+    "name": "teclado",
+    "description": "buen teclado",
+    "id": 3,
+    "stock": 12
+}]
