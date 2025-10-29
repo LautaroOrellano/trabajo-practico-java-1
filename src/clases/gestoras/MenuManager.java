@@ -102,10 +102,11 @@ public class MenuManager {
         System.out.println("[2] Buscar producto por id   |");
         System.out.println("[3] Ver todos los productos  |");
         System.out.println("[4] Modificar producto       |");
-        System.out.println("[5] Ver ventas               |");
-        System.out.println("[6] Buscar venta             |");
-        System.out.println("[7] Ver usuarios             |");
-        System.out.println("[8] Buscar usuarios          |");
+        System.out.println("[5] Eliminar un producto       |");
+        System.out.println("[6] Ver ventas               |");
+        System.out.println("[7] Buscar venta             |");
+        System.out.println("[8] Ver usuarios             |");
+        System.out.println("[9] Buscar usuarios          |");
         System.out.println("[0] Exit                     |");
         System.out.println("------------------------------");
     }
