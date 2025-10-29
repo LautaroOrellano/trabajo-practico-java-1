@@ -36,27 +36,41 @@ public class Cart {
                 .sum();
     }
 
-    /*public static Cart fromJson(JSONObject json) {
-        Cart cart = new Cart();
-        JSONArray array = json.getJSONArray("products");
-        try {
-            for (int i = 0; i < array.length(); i++) {
-                JSONObject productJson = array.getJSONObject(i);
-                Product p = new Product(
-                        productJson.getString("name"),
-                        productJson.getString("description"),
-                        productJson.getDouble("price"),
-                        productJson.getInt("stock")
-                );
-                cart.addProduct(p);
+    public static JSONObject toJson(Cart cart) throws JSONException {
+        JSONObject obj = new JSONObject();
+        JSONArray productsArray = new JSONArray();
+
+        if (cart != null && cart.getProducts() != null) {
+            for (Product p : cart.getProducts()) {
+                JSONObject prodObj = new JSONObject();
+                prodObj.put("name", p.getName());
+                prodObj.put("description", p.getDescription());
+                prodObj.put("price", p.getPrice());
+                prodObj.put("stock", p.getStock());
+                productsArray.put(prodObj);
             }
-        } catch (JSONException e) {
-            System.out.println("Problema al convertir el json");
         }
 
+        obj.put("products", productsArray);
+        return obj;
+    }
 
+    public static Cart fromJson(JSONObject obj) throws JSONException{
+        Cart cart = new Cart();
+        JSONArray productsArray = obj.getJSONArray("products");
+
+        for (int i = 0; i < productsArray.length(); i++) {
+            JSONObject pObj = productsArray.getJSONObject(i);
+            Product p = new Product(
+                    pObj.getString("name"),
+                    pObj.getString("description"),
+                    pObj.getDouble("price"),
+                    pObj.getInt("stock")
+            );
+            cart.addProduct(p);
+        }
         return cart;
-    }*/
+    }
 
     public boolean isEmpty() {
         return products.isEmpty();

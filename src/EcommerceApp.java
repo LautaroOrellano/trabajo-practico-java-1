@@ -4,6 +4,7 @@ import clases.entidades.users.User;
 import clases.gestoras.AuthManager;
 import clases.gestoras.MenuManager;
 import enums.Rol;
+import repository.UserRepository;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -12,8 +13,8 @@ import java.util.Scanner;
 
 public class EcommerceApp {
 
-    private List<User> users = new ArrayList<>();
-    private AuthManager authManager = new AuthManager(users);
+    private UserRepository userRepository = new UserRepository();
+    private AuthManager authManager = new AuthManager(userRepository);
     private MenuManager menuManager = new MenuManager();
     private Scanner scanner = new Scanner(System.in);
 

@@ -12,6 +12,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import repository.UserRepository;
 import ui.MainFX;
 
 import java.util.ArrayList;
@@ -19,7 +20,8 @@ import java.util.ArrayList;
 public class LoginController {
 
     private StackPane view = new StackPane();
-    private AuthManager authManager = new AuthManager(new ArrayList<>());
+    private UserRepository userRepository = new UserRepository();
+    private AuthManager authManager = new AuthManager(userRepository);
     private MainFX mainApp;
 
     public LoginController(MainFX mainApp) {

@@ -20,7 +20,7 @@ public class UserRepository implements IRepository<User> {
     private final String archivo = "users.json";
 
     public UserRepository() {
-        /*try {
+        try {
             String jsonData = JsonUtiles.leer(archivo);
 
             if (jsonData.isEmpty() || jsonData.equals("[]")) {
@@ -33,6 +33,7 @@ public class UserRepository implements IRepository<User> {
                     String type = obj.optString("type", "Customer"); // Valor por defecto
 
                     User u;
+
                     if (type.equals("Admin")) {
                         u = new Admin(
                                 obj.getString("name"),
@@ -41,26 +42,61 @@ public class UserRepository implements IRepository<User> {
                                 obj.getString("password")
                         );
                     } else {
+                        Cart cart = null;
+
+                        if (obj.has("cart") && !obj.isNull("cart")) {
+                            cart = Cart.fromJson(obj.getJSONObject("cart"));
+                        }
+
                         u = new Customer(
                                 obj.getString("name"),
                                 obj.getString("lastName"),
                                 obj.getString("email"),
-                                obj.getString("password"),
-                                Cart.fromJson(obj.getJSONObject("cart"))
+                                obj.getString("password")
                         );
+
+                        if (cart != null) {
+                            u.setCart(cart);
+                        }
+
                     }
                     users.add(u);
                 }
             }
         } catch (JSONException e) {
+            e.printStackTrace();
             System.out.println("Error al leer productos desde json");
-        }*/
+        }
+    }
+
+    private void saveToJson() {
+        try {
+            JSONArray array = new JSONArray();
+            for (User u : users) {
+                JSONObject obj = new JSONObject();
+                obj.put("type", u.getRol().toString());
+                obj.put("name", u.getName());
+                obj.put("lastName", u.getLastName());
+                obj.put("email", u.getEmail());
+                obj.put("password", u.getPassword());
+
+                if (u instanceof Customer) {
+                    obj.put("cart", Cart.toJson(u.getCart()));
+                }
+
+                array.put(obj);
+            }
+            JsonUtiles.grabar(array, archivo);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            System.out.println("Error al guardar usuarios en JSON");
+        }
     }
 
     @Override
-    public void add(User item) {
-        users.add(item);
-        //saveToJson();
+    public void add(User user) {
+        users.add(user);
+        saveToJson();
     }
 
     @Override
