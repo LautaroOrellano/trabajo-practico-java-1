@@ -19,7 +19,9 @@ public class Cart {
     }
 
     public void addProduct(Product product) {
-        products.add(product);
+        if (product != null){
+            products.add(product);
+        }
     }
 
     public void removeProduct(Product product) {
@@ -36,6 +38,7 @@ public class Cart {
                 .sum();
     }
 
+    // Mapeo de Carrito a Json
     public static JSONObject toJson(Cart cart) throws JSONException {
         JSONObject obj = new JSONObject();
         JSONArray productsArray = new JSONArray();
@@ -50,11 +53,11 @@ public class Cart {
                 productsArray.put(prodObj);
             }
         }
-
         obj.put("products", productsArray);
         return obj;
     }
 
+    // Mapeo de Json a Carrito
     public static Cart fromJson(JSONObject obj) throws JSONException{
         Cart cart = new Cart();
         JSONArray productsArray = obj.getJSONArray("products");

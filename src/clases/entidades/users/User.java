@@ -88,6 +88,9 @@ public abstract class User {
 
     // Manejo de carrito en usuario
     public void addProductToCart(Product p) {
+        if (cart == null) {
+            cart = new Cart();
+        }
         cart.addProduct(p);
     }
 
