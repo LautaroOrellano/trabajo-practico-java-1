@@ -9,7 +9,8 @@ public interface IProducManager {
     void createProduct(String name, String description, double price,int stock);
     void getAllProducts();
     List<Product> getProducts();
-    void searchProduct(int id);
+    void searchProductById(int id);
+    void searchProductByName(String name);
     Product searchProductFX(int id);
     void updateProduct(int id, String name, String description, double price, int stock);
     void deleteProduct(int id);

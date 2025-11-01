@@ -35,6 +35,14 @@ public class ProductRepository implements IRepository<Product> {
             System.out.println("Error al leer productos desde json");
         }
     }
+
+    private void saveToJson()  {
+        JSONArray array = new JSONArray();
+        for (Product p : products) {
+            array.put(p.toJson());
+        }
+        JsonUtiles.grabar(array, archivo);
+    }
     
     @Override
     public void add(Product item) {
@@ -69,13 +77,4 @@ public class ProductRepository implements IRepository<Product> {
         }
         return removed;
     }
-
-    private void saveToJson()  {
-        JSONArray array = new JSONArray();
-        for (Product p : products) {
-            array.put(p.toJson());
-        }
-        JsonUtiles.grabar(array, archivo);
-    }
-
 }

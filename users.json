@@ -1,25 +1,9 @@
-[
-    {
-        "lastName": "Orellano",
-        "password": "1234",
-        "name": "Lautaro",
-        "type": "ADMIN",
-        "email": "lautaro@gmail.com"
-    },
-    {
-        "lastName": "Perez",
-        "password": "abcd",
-        "name": "Juan",
-        "type": "CUSTOMER",
-        "email": "juan@mail.com",
-        "cart": {"products": []}
-    },
-    {
-        "lastName": "orellano",
-        "password": "1234",
-        "name": "lautaro",
-        "type": "CUSTOMER",
-        "email": "lautaro@gmail.com",
-        "cart": {"products": []}
-    }
-]
+[{
+    "lastName": "Orellano",
+    "password": "1234",
+    "name": "Lautaro",
+    "id": 1,
+    "type": "CUSTOMER",
+    "email": "lautaro@gmail.com",
+    "cart": {"products": []}
+}]

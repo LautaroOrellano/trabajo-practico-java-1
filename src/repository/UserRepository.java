@@ -1,10 +1,6 @@
 package repository;
 
-import clases.entidades.Cart;
-import clases.entidades.users.Admin;
-import clases.entidades.users.Customer;
 import clases.entidades.users.User;
-import enums.Rol;
 import interfaces.IRepository;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,10 +12,11 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserRepository implements IRepository<User> {
-    private final List<User> users = new ArrayList<>();
+    private final List<User> users;
     private final String archivo = "users.json";
 
     public UserRepository() {
+        this.users = new ArrayList<>();
         try {
             String jsonData = JsonUtiles.leer(archivo);
 
@@ -30,38 +27,18 @@ public class UserRepository implements IRepository<User> {
                 JSONArray array = new JSONArray(jsonData);
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject obj = array.getJSONObject(i);
-                    String type = obj.optString("type", "Customer"); // Valor por defecto
-
-                    User u;
-
-                    if (type.equals("Admin")) {
-                        u = new Admin(
-                                obj.getString("name"),
-                                obj.getString("lastName"),
-                                obj.getString("email"),
-                                obj.getString("password")
-                        );
-                    } else {
-                        Cart cart = null;
-
-                        if (obj.has("cart") && !obj.isNull("cart")) {
-                            cart = Cart.fromJson(obj.getJSONObject("cart"));
-                        }
-
-                        u = new Customer(
-                                obj.getString("name"),
-                                obj.getString("lastName"),
-                                obj.getString("email"),
-                                obj.getString("password")
-                        );
-
-                        if (cart != null) {
-                            u.setCart(cart);
-                        }
-
-                    }
+                    User u = User.fromJson(obj);
                     users.add(u);
                 }
+            }
+
+            // Ajusto AUTO_INCREMENT según los IDs del JSON
+            if (!users.isEmpty()) {
+                int maxId = users.stream()
+                        .mapToInt(User::getId)
+                        .max()
+                        .orElse(0);
+                User.setAutoIncrement(maxId + 1);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -70,27 +47,25 @@ public class UserRepository implements IRepository<User> {
     }
 
     private void saveToJson() {
-        try {
-            JSONArray array = new JSONArray();
-            for (User u : users) {
-                JSONObject obj = new JSONObject();
-                obj.put("type", u.getRol().toString());
-                obj.put("name", u.getName());
-                obj.put("lastName", u.getLastName());
-                obj.put("email", u.getEmail());
-                obj.put("password", u.getPassword());
-
-                if (u instanceof Customer) {
-                    obj.put("cart", Cart.toJson(u.getCart()));
-                }
-
-                array.put(obj);
-            }
-            JsonUtiles.grabar(array, archivo);
-        } catch (JSONException e) {
-            e.printStackTrace();
-            System.out.println("Error al guardar usuarios en JSON");
+        JSONArray array = new JSONArray();
+        for (User u : users) {
+            array.put(u.toJson());
         }
+
+        try {
+            // Crear un backup antes de sobrescribir
+            JsonUtiles.grabar(array, "users_backup.json");
+
+            // Grabar el archivo principal
+            JsonUtiles.grabar(array, archivo);
+
+        } catch (Exception e) {
+            System.out.println("Error al guardar usuarios: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            System.out.println("Operación de guardado finalizada.");
+        }
+
     }
 
     @Override
@@ -101,21 +76,29 @@ public class UserRepository implements IRepository<User> {
 
     @Override
     public Optional<User> findById(int id) {
-        return Optional.empty();
+        return users.stream()
+                .filter(u -> u.getId() == id)
+                .findFirst();
     }
 
     @Override
     public Optional<User> findByName(String name) {
-        return Optional.empty();
+        return users.stream()
+                .filter(u -> u.getName().equals(name))
+                .findFirst();
     }
 
     @Override
     public List<User> getAll() {
-        return List.of();
+        return users;
     }
 
     @Override
     public boolean removeById(int id) {
-        return false;
+        boolean removed = users.removeIf(u -> u.getId() == id);
+        if (removed) {
+            saveToJson();
+        }
+        return removed;
     }
 }

@@ -1,9 +1,11 @@
 package clases.gestoras;
 
+import clases.entidades.Product;
 import clases.entidades.users.Admin;
 import clases.entidades.users.Customer;
 import clases.entidades.users.User;
 import enums.Rol;
+import exceptions.ProductNotFoundException;
 
 import java.util.Scanner;
 
@@ -12,7 +14,6 @@ public class MenuManager {
     private ProductManager productManager = new ProductManager();
     private UserManager userManager = new UserManager();
     private OrderManager orderManager = new OrderManager();
-    private ShopManager shopManager = new ShopManager();
 
     public void showWelcomeMenu() {
         System.out.println("------------------------------------");
@@ -30,28 +31,31 @@ public class MenuManager {
         System.out.println("| == Sección Registro == |");
         System.out.println("--------------------------");
 
-        System.out.println("Ingrese su nombre: ");
-        String name = scanner.nextLine();
+        String name, lastName, email, password;
 
-        System.out.println("Ingrese su apellido: ");
-        String lastName = scanner.nextLine();
+        do {
+            System.out.println("Ingrese su nombre: ");
+            name = scanner.nextLine().trim();
+            if (name.isEmpty()) System.out.println("El nombre no puede estar vacío.");
+        } while (name.isEmpty());
 
-        System.out.println("Ingrese su email: ");
-        String email = scanner.nextLine();
+        do {
+            System.out.println("Ingrese su apellido: ");
+            lastName = scanner.nextLine().trim();
+            if (lastName.isEmpty()) System.out.println("El apellido no puede estar vacío.");
+        } while (lastName.isEmpty());
 
-        System.out.println("Ingrese su password: ");
-        String password = scanner.nextLine();
+        do {
+            System.out.println("Ingrese su email: ");
+            email = scanner.nextLine().trim();
+            if (email.isEmpty()) System.out.println("El email no puede estar vacío.");
+        } while (email.isEmpty());
 
-        // Validación de campos
-        if (name == null || name.isEmpty()) {
-            System.out.println("No ingreso su nombre, intentelo de nuevo");
-        } else if (lastName == null || lastName.isEmpty()) {
-            System.out.println("No ingreso su apellido, intentelo de nuevo");
-        } else if (email == null || email.isEmpty()) {
-            System.out.println("No ingreso su email, intentelo de nuevo");
-        } else if ( password == null || password.isEmpty()) {
-            System.out.println("No ingreso su contraseña, intentelo de nuevo");
-        }
+        do {
+            System.out.println("Ingrese su password: ");
+            password = scanner.nextLine().trim();
+            if (password.isEmpty()) System.out.println("La contraseña no puede estar vacía.");
+        } while (password.isEmpty());
 
         return new Customer(name, lastName, email, password);
     }
@@ -80,20 +84,6 @@ public class MenuManager {
         }
     }
 
-    public void showCustomerMenu() {
-        System.out.println("--------------------------");
-        System.out.println("|      == Menu ==        |");
-        System.out.println("--------------------------");
-        System.out.println("[1] Ver producto         |");
-        System.out.println("[2] Buscar producto      |");
-        System.out.println("[3] Generar orden        |");
-        System.out.println("[4] Ver mi orden         |");
-        System.out.println("[5] Ver catalogo         |");
-        System.out.println("[6] Ver mi carrito       |");
-        System.out.println("[7] Agregar a mi carrito |");
-        System.out.println("--------------------------");
-    }
-
     public void showAdminMenu() {
         System.out.println("------------------------------");
         System.out.println("|     == Menu Admin ==       |");
@@ -109,6 +99,21 @@ public class MenuManager {
         System.out.println("[9] Buscar usuarios          |");
         System.out.println("[0] Exit                     |");
         System.out.println("------------------------------");
+    }
+
+    public void showCustomerMenu() {
+        System.out.println("------------------------------------");
+        System.out.println("|            == Menu ==            |");
+        System.out.println("------------------------------------");
+        System.out.println("[1] Ver lista de productos         |");
+        System.out.println("[2] Buscar producto                |");
+        System.out.println("[3] Agregar producto al carrito    |");
+        System.out.println("[4] Ver mi carrito                 |");
+        System.out.println("[5] Eliminar producto del carrito  |");
+        System.out.println("[6] Generar orden                  |");
+        System.out.println("[7] Ver mi orden                   |");
+        System.out.println("[0] Salir del programa             |");
+        System.out.println("------------------------------------");
     }
 
     public void processOption(User user, int option, Scanner scanner) {
@@ -140,7 +145,7 @@ public class MenuManager {
                 System.out.println("Id del producto a buscar");
                 int id = scanner.nextInt();
                 scanner.nextLine();
-                productManager.searchProduct(id);
+                productManager.searchProductById(id);
             }
             case 3 -> {
                 // Listar todos los productos
@@ -174,7 +179,7 @@ public class MenuManager {
             case 7 -> orderManager.searchOrder();
             case 8 -> orderManager.removeOrder();
             case 9 -> userManager.getAllUsers();
-            case 10 -> userManager.searchUser();
+            case 10 -> userManager.searchUserbyId(1);
             case 0 -> System.out.printf("Hasta pronto");
             default -> System.out.println("Opcion incorrecta.");
         }
@@ -187,15 +192,47 @@ public class MenuManager {
                 productManager.getAllProducts();
             }
             case 2 -> {
-                // Buscar producto por id
-                System.out.println("Id del producto a buscar");
-                int id = scanner.nextInt();
-                scanner.nextLine();
-                productManager.searchProduct(id);
+                // Buscar producto por name
+                System.out.println("Nombre del producto a buscar");
+                String name = scanner.nextLine();
+                productManager.searchProductByName(name);
             }
-            case 3 -> shopManager.getShop();
-            case 4 -> userManager.getMeCart();
-            case 5 -> userManager.addMeCart();
+            case 3 -> {
+                // Agregar producto al carrito
+                System.out.println("Que producto desea agregar al carrito?");
+                String name = scanner.nextLine();
+                try {
+                    Product prod = productManager.productByNameAObject(name);
+                    if (prod != null) {
+                        userManager.addProductToCart(user.getId(), prod);
+                    } else {
+                        throw new ProductNotFoundException("Producto no encontrado");
+                    }
+                } catch (ProductNotFoundException e) {
+                    System.out.println(e.getMessage());
+                } catch (Exception e) {
+                    System.out.println("Ocurrió un error inesperado: " + e.getMessage());
+                }
+            }
+
+            case 4 ->
+                // Mostrar productos en mi carrito
+                userManager.getProductsToMeCart(user.getId());
+
+            case 5 -> {
+                // Eliminar producto de carrito
+                System.out.println("Que producto desea eliminar del carrito?");
+                userManager.getProductsToMeCart(user.getId());
+                String name = scanner.nextLine();
+                Product product = productManager.productByNameAObject(name);
+
+                if (product != null ){
+                    userManager.deleteProductToCart(user.getId(), product);
+                } else {
+                    throw new ProductNotFoundException("Producto no encontrado");
+                }
+            }
+
             case 6 -> {
                 orderManager.generateOrderFromCart(user);
             }

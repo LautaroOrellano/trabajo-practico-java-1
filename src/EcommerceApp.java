@@ -19,9 +19,6 @@ public class EcommerceApp {
     private Scanner scanner = new Scanner(System.in);
 
     public EcommerceApp() {
-        authManager.register(new Admin("Lautaro", "Orellano", "lautaro@gmail.com", "1234"));
-        authManager.register(new Customer("Juan", "Perez", "juan@mail.com", "abcd",
-                12345678L, 123456789L, "Calle Falsa 123", 25));
     }
 
     public void run() {
@@ -29,11 +26,21 @@ public class EcommerceApp {
         int option = 0;
 
         do {
-            // Menu bienvenida
-            menuManager.showWelcomeMenu();
+            while (true) {
+                // Menu bienvenida
+                menuManager.showWelcomeMenu();
 
-            option = scanner.nextInt();
-            scanner.nextLine();
+                System.out.print("> ");
+
+                String input = scanner.nextLine().trim();
+
+                try {
+                    option = Integer.parseInt(input);
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("Debes ingresar un número válido.\n");
+                }
+            }
 
             switch (option) {
                 case 1 -> {
@@ -60,22 +67,31 @@ public class EcommerceApp {
                 case 0 -> System.out.println("Saliendo del sistema...");
                 default -> System.out.println("Opcion inválida.\n");
             }
+
         } while (user== null && option != 0 );
 
         // Entrada al menu dependiendo de rol
         if (user != null) {
             int optionMenu = 0;
-
             do {
-                menuManager.showMenu(user);
-                System.out.println("Elige una opcion correcta");
-                optionMenu = scanner.nextInt();
-                scanner.nextLine();
+                try {
+                    menuManager.showMenu(user);
+                    System.out.println("Elige una opcion correcta");
 
-                menuManager.processOption(user, optionMenu, scanner);
+                    if (!scanner.hasNextInt()) {
+                        System.out.println("Debes ingresar un número válido");
+                        scanner.nextLine();
+                        continue;
+                    }
 
+                    optionMenu = scanner.nextInt();
+                    scanner.nextLine();
+
+                    menuManager.processOption(user, optionMenu, scanner);
+                } catch (Exception e) {
+                    System.out.println("Ocurrio un error: " + e.getMessage());
+                }
             } while (optionMenu != 0);
-
             System.out.println("\nSesión cerrada.");
         }
     }

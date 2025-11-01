@@ -1,6 +1,7 @@
 package clases.gestoras;
 
 import clases.entidades.Product;
+import exceptions.ProductNotFoundException;
 import interfaces.IProducManager;
 import interfaces.IRepository;
 import repository.ProductRepository;
@@ -30,12 +31,31 @@ public class ProductManager implements IProducManager {
     }
 
     @Override
-    public void searchProduct(int id) {
+    public void searchProductById(int id) {
         repository.findById(id)
                 .ifPresentOrElse(
                         product -> System.out.println(product),
-                        () -> System.out.println("Producto con ID " + id + " no encontrado.")
+                        () -> System.out.println("Producto con ID " + id + " no encontrado")
                 );
+    }
+
+    @Override
+    public void searchProductByName(String name) {
+        repository.findByName(name)
+                .ifPresentOrElse(
+                        product-> {
+                            System.out.println(" == Producto encontrado: ==");
+                                    System.out.println("Nombre: " + product.getName());
+                                    System.out.println("Precio: $" + product.getPrice());
+                                    System.out.println("Stock: " + product.getStock());
+                        },
+                        () -> System.out.println("Producto con nombre " + name + " no encontrado")
+                );
+    }
+
+    public Product productByNameAObject(String name) {
+        return repository.findByName(name)
+                .orElseThrow(() -> new ProductNotFoundException("Producto no encontrado"));
     }
 
     @Override
