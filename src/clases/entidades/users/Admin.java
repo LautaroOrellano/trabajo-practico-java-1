@@ -1,6 +1,8 @@
 package clases.entidades.users;
 
 import enums.Rol;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class Admin extends User {
 
@@ -8,12 +10,12 @@ public class Admin extends User {
         super(name, lastName, email, password, Rol.ADMIN);
     }
 
+    // baja o actualizacion como polimorfismo
     @Override
     public void darseDeBaja() {
 
     }
 
-    // baja o actualizacion como polimorfismo
     @Override
     public String toString() {
         return "Admin{} " + super.toString();
