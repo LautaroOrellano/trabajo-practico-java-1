@@ -92,7 +92,7 @@ public class MenuManager {
         System.out.println("[2] Buscar producto por id   |");
         System.out.println("[3] Ver todos los productos  |");
         System.out.println("[4] Modificar producto       |");
-        System.out.println("[5] Eliminar un producto       |");
+        System.out.println("[5] Eliminar un producto     |");
         System.out.println("[6] Ver ventas               |");
         System.out.println("[7] Buscar venta             |");
         System.out.println("[8] Ver usuarios             |");
@@ -110,8 +110,9 @@ public class MenuManager {
         System.out.println("[3] Agregar producto al carrito    |");
         System.out.println("[4] Ver mi carrito                 |");
         System.out.println("[5] Eliminar producto del carrito  |");
-        System.out.println("[6] Generar orden                  |");
-        System.out.println("[7] Ver mi orden                   |");
+        System.out.println("[6] Vaciar carrito                 |");
+        System.out.println("[7] Realizar compra                |");
+        System.out.println("[8] Ver mi orden                   |");
         System.out.println("[0] Salir del programa             |");
         System.out.println("------------------------------------");
     }
@@ -175,11 +176,11 @@ public class MenuManager {
                 scanner.nextLine();
                 productManager.deleteProduct(id);
             }
-            case 6 -> orderManager.getAllOrder();
+            //case 6 -> userManager.clearMeCart();
             case 7 -> orderManager.searchOrder();
             case 8 -> orderManager.removeOrder();
             case 9 -> userManager.getAllUsers();
-            case 10 -> userManager.searchUserbyId(1);
+            case 10 -> userManager.searchUserById(1);
             case 0 -> System.out.printf("Hasta pronto");
             default -> System.out.println("Opcion incorrecta.");
         }
@@ -214,11 +215,9 @@ public class MenuManager {
                     System.out.println("Ocurrió un error inesperado: " + e.getMessage());
                 }
             }
-
             case 4 ->
                 // Mostrar productos en mi carrito
                 userManager.getProductsToMeCart(user.getId());
-
             case 5 -> {
                 // Eliminar producto de carrito
                 System.out.println("Que producto desea eliminar del carrito?");
@@ -232,11 +231,14 @@ public class MenuManager {
                     throw new ProductNotFoundException("Producto no encontrado");
                 }
             }
-
             case 6 -> {
+                // Vaciar carrito completo
+                userManager.clearMeCart(user.getId());
+            }
+            case 7 -> {
                 orderManager.generateOrderFromCart(user);
             }
-            case 7 -> orderManager.getMeOrder();
+            case 8 -> orderManager.getMeOrder();
             case 0 -> System.out.printf("Hasta pronto");
             default -> System.out.println("Opcion incorrecta.");
         }

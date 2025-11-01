@@ -9,14 +9,14 @@ import repository.ProductRepository;
 import java.util.List;
 
 public class ProductManager implements IProducManager {
-    private IRepository<Product> repository;
+    private IRepository<Product> productRepository;
 
     public ProductManager () {
-        this.repository = new ProductRepository();
+        this.productRepository = new ProductRepository();
     }
 
     public ProductManager(ProductRepository repository) {
-        this.repository = repository;
+        this.productRepository = repository;
     }
 
     @Override
@@ -26,13 +26,13 @@ public class ProductManager implements IProducManager {
             return;
         }
         Product product = new Product(name, description, price, stock);
-        repository.add(product);
+        productRepository.add(product);
         System.out.println("Producto " + name + " creado con exito");
     }
 
     @Override
     public void searchProductById(int id) {
-        repository.findById(id)
+        productRepository.findById(id)
                 .ifPresentOrElse(
                         product -> System.out.println(product),
                         () -> System.out.println("Producto con ID " + id + " no encontrado")
@@ -41,7 +41,7 @@ public class ProductManager implements IProducManager {
 
     @Override
     public void searchProductByName(String name) {
-        repository.findByName(name)
+        productRepository.findByName(name)
                 .ifPresentOrElse(
                         product-> {
                             System.out.println(" == Producto encontrado: ==");
@@ -54,32 +54,26 @@ public class ProductManager implements IProducManager {
     }
 
     public Product productByNameAObject(String name) {
-        return repository.findByName(name)
+        return productRepository.findByName(name)
                 .orElseThrow(() -> new ProductNotFoundException("Producto no encontrado"));
     }
 
     @Override
-    public Product searchProductFX(int id) {
-        return repository.findById(id)
-                .orElse(null);
-    }
-
-    @Override
     public void getAllProducts() {
-        if(repository.getAll().isEmpty()) {
+        if(productRepository.getAll().isEmpty()) {
             System.out.println("No hay productos cargados actualmente.");
         }
 
-        repository.getAll().forEach(System.out::println);
+        productRepository.getAll().forEach(System.out::println);
     }
 
     public List<Product> getProducts() {
-        return repository.getAll();
+        return productRepository.getAll();
     }
 
     @Override
     public void updateProduct(int id, String name, String description, double price, int stock) {
-        Product found = repository.getAll()
+        Product found = productRepository.getAll()
                 .stream()
                 .filter(p -> p.getId() == id)
                 .findFirst()
@@ -97,8 +91,15 @@ public class ProductManager implements IProducManager {
 
     @Override
     public void deleteProduct(int id) {
-       boolean removed = repository.removeById(id);
+       boolean removed = productRepository.removeById(id);
         System.out.println(removed ? "Producto eliminado con exito." : "Producto no encontrado.");
+    }
+
+    // Seccion UX
+    @Override
+    public Product searchProductFX(int id) {
+        return productRepository.findById(id)
+                .orElse(null);
     }
 
 }

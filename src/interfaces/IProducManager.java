@@ -11,8 +11,8 @@ public interface IProducManager {
     List<Product> getProducts();
     void searchProductById(int id);
     void searchProductByName(String name);
-    Product searchProductFX(int id);
     void updateProduct(int id, String name, String description, double price, int stock);
     void deleteProduct(int id);
+    Product searchProductFX(int id);
 }
 
