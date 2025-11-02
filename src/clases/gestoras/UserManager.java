@@ -51,12 +51,14 @@ public class UserManager implements IUserManager {
                     if (user.getCart().isEmpty()) {
                         System.out.println("El carrito esta vacío");
                     } else {
-                        System.out.println("Productos en el carrito: ");
+                        System.out.println("----------------------------");
+                        System.out.println("| Productos en el carrito: |");
+                        System.out.println("----------------------------");
                         user.getCart().getProducts().forEach(p -> {
                             System.out.println("Nombre: " + p.getName());
                             System.out.println("Descripcion: " + p.getDescription());
                             System.out.println("Precio: " + p.getPrice());
-                            System.out.println("Stock: " + p.getStock());
+                            System.out.println("----------------------------");
                         });
                     }
                 },

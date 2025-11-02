@@ -9,6 +9,7 @@ public interface IRepository<T> {
     Optional<T> findById(int id);
     Optional<T> findByName(String name);
     List<T> getAll();
+    void getAllCustom();
     void update(T entity);
     boolean removeById(int id);
 

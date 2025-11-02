@@ -1,7 +1,7 @@
 [{
-    "lastName": "Orellano",
+    "lastName": "orellano",
     "password": "1234",
-    "name": "Lautaro",
+    "name": "lautaro",
     "id": 1,
     "type": "CUSTOMER",
     "email": "lautaro@gmail.com",
