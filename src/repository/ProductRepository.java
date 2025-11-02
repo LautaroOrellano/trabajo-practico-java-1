@@ -7,41 +7,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import utils.JsonUtiles;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class ProductRepository implements IRepository<Product> {
     private final List<Product> products = new ArrayList<>();
-    private final String archivo = "product.json";
+    private final String archivo = "json/product.json";
 
 
     public ProductRepository() {
-        try {
-            String jsonData = JsonUtiles.leer(archivo);
-
-            if (jsonData.isEmpty() || jsonData.equals("[]")) {
-                System.out.println("No hay productos guardados, creando archivo vacío...");
-                JsonUtiles.grabar(new JSONArray(), archivo);
-            } else {
-                JSONArray array = new JSONArray(jsonData);
-                for (int i = 0; i < array.length(); i++) {
-                    JSONObject obj = array.getJSONObject(i);
-                    Product p = Product.fromJson(obj);
-                    products.add(p);
-                }
-            }
-        } catch (JSONException e) {
-            System.out.println("Error al leer productos desde json");
-        }
-    }
-
-    private void saveToJson()  {
-        JSONArray array = new JSONArray();
-        for (Product p : products) {
-            array.put(p.toJson());
-        }
-        JsonUtiles.grabar(array, archivo);
+        loadFromJson();
     }
 
     // CRUD GENERICO
@@ -71,6 +48,18 @@ public class ProductRepository implements IRepository<Product> {
     }
 
     @Override
+    public void getAllCustom() {
+        products.forEach(product -> {
+            System.out.println("------------------------");
+            System.out.println("Nombre: " + product.getName());
+            System.out.println("Descripcion: " + product.getDescription());
+            System.out.println("Precio: " + product.getPrice());
+            System.out.println("Stock: " + product.getStock());
+            System.out.println("------------------------");
+        });
+    }
+
+    @Override
     public void update(Product updateProduct) {
         for (int i = 0; i < products.size(); i++) {
             if (products.get(i).getId() == updateProduct.getId()) {
@@ -90,5 +79,40 @@ public class ProductRepository implements IRepository<Product> {
             saveToJson();
         }
         return removed;
+    }
+    private void loadFromJson() {
+        try {
+            // Verificar si el archivo existe antes de leerlo
+            File file = new File(archivo);
+            if (!file.exists()) {
+                System.out.println("Archivo de órdenes no encontrado. Creando uno nuevo...");
+                file.getParentFile().mkdirs(); // Crea la carpeta json/ si no existe
+                JsonUtiles.grabar(new JSONArray(), archivo);
+            }
+
+            String jsonData = JsonUtiles.leer(archivo);
+
+            if (jsonData.isEmpty() || jsonData.equals("[]")) {
+                System.out.println("No hay productos guardados, creando archivo vacío...");
+                JsonUtiles.grabar(new JSONArray(), archivo);
+            } else {
+                JSONArray array = new JSONArray(jsonData);
+                for (int i = 0; i < array.length(); i++) {
+                    JSONObject obj = array.getJSONObject(i);
+                    Product p = Product.fromJson(obj);
+                    products.add(p);
+                }
+            }
+        } catch (JSONException e) {
+            System.out.println("Error al leer productos desde json");
+        }
+    }
+
+    public void saveToJson()  {
+        JSONArray array = new JSONArray();
+        for (Product p : products) {
+            array.put(p.toJson());
+        }
+        JsonUtiles.grabar(array, archivo);
     }
 }

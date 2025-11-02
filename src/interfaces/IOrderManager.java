@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IOrderManager {
 
-    Order generateOrderFromCart(User user);
+    void generateOrderFromCart(User user);
     void getAllOrder();
     void getMeOrder();
     void searchOrder();

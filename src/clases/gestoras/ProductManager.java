@@ -44,10 +44,13 @@ public class ProductManager implements IProducManager {
         productRepository.findByName(name)
                 .ifPresentOrElse(
                         product-> {
+                            System.out.println("----------------------------");
                             System.out.println(" == Producto encontrado: ==");
+                            System.out.println("----------------------------");
                                     System.out.println("Nombre: " + product.getName());
                                     System.out.println("Precio: $" + product.getPrice());
                                     System.out.println("Stock: " + product.getStock());
+                                    System.out.println("----------------------------");
                         },
                         () -> System.out.println("Producto con nombre " + name + " no encontrado")
                 );
@@ -58,6 +61,7 @@ public class ProductManager implements IProducManager {
                 .orElseThrow(() -> new ProductNotFoundException("Producto no encontrado"));
     }
 
+    // Muestro por pantalla todos los productos
     @Override
     public void getAllProducts() {
         if(productRepository.getAll().isEmpty()) {
@@ -67,9 +71,21 @@ public class ProductManager implements IProducManager {
         productRepository.getAll().forEach(System.out::println);
     }
 
+    // Devuelvo una lista de todos los productos
     public List<Product> getProducts() {
         return productRepository.getAll();
     }
+
+    @Override
+    public void getAllProductsCustom() {
+        if (productRepository.getAll().isEmpty()) {
+            System.out.println("No hay productos cargados actualmente.");
+            return;
+        }
+        productRepository.getAllCustom();
+
+    }
+
 
     @Override
     public void updateProduct(int id, String name, String description, double price, int stock) {

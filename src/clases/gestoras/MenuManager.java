@@ -150,7 +150,7 @@ public class MenuManager {
             }
             case 3 -> {
                 // Listar todos los productos
-                productManager.getAllProducts();
+                productManager.getProducts();
             }
             case 4 -> {
                 // Actualizar un producto completo
@@ -190,7 +190,7 @@ public class MenuManager {
         switch (option) {
             case 1 -> {
                 // Obtener todos los productos
-                productManager.getAllProducts();
+                productManager.getAllProductsCustom();
             }
             case 2 -> {
                 // Buscar producto por name

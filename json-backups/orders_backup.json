@@ -1,0 +1,62 @@
+[
+    {
+        "localDateTime": "2025-11-02T13:25:18.654872100",
+        "numOrder": "#000001",
+        "productsList": [
+            {
+                "price": 123.4,
+                "name": "teclado",
+                "description": "buen teclado",
+                "id": 11,
+                "stock": 1
+            },
+            {
+                "price": 234.4,
+                "name": "mouse",
+                "description": "buen mouse",
+                "id": 12,
+                "stock": 1
+            }
+        ],
+        "customerId": 1,
+        "id": 1,
+        "status": "PENDING"
+    },
+    {
+        "localDateTime": "2025-11-02T13:40:51.386441800",
+        "numOrder": "#000002",
+        "productsList": [{
+            "price": 123.4,
+            "name": "teclado",
+            "description": "buen teclado",
+            "id": 1,
+            "stock": 10
+        }],
+        "customerId": 1,
+        "id": 2,
+        "status": "PENDING"
+    },
+    {
+        "localDateTime": "2025-11-02T14:02:16.707053100",
+        "numOrder": "#000003",
+        "productsList": [
+            {
+                "price": 123.4,
+                "name": "teclado",
+                "description": "buen teclado",
+                "id": 7,
+                "stock": 10
+            },
+            {
+                "price": 234.4,
+                "name": "mouse",
+                "description": "buen mouse",
+                "id": 8,
+                "stock": 1
+            }
+        ],
+        "customerId": 1,
+        "id": 3,
+        "status": "PENDING"
+    }
+]

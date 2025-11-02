@@ -7,17 +7,82 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import utils.JsonUtiles;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class UserRepository implements IRepository<User> {
     private final List<User> users;
-    private final String archivo = "users.json";
+    private final String archivo = "json/users.json";
 
     public UserRepository() {
         this.users = new ArrayList<>();
+        loadFromJson();
+    }
+
+    // CRUD GENERICO
+    @Override
+    public void add(User user) {
+        users.add(user);
+        saveToJson();
+    }
+
+    @Override
+    public Optional<User> findById(int id) {
+        return users.stream()
+                .filter(u -> u.getId() == id)
+                .findFirst();
+    }
+
+    @Override
+    public Optional<User> findByName(String name) {
+        return users.stream()
+                .filter(u -> u.getName().equals(name))
+                .findFirst();
+    }
+
+    @Override
+    public List<User> getAll() {
+        return users;
+    }
+
+    @Override
+    public void getAllCustom() {
+
+    }
+
+    public void update(User updatedUser) {
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getId() == updatedUser.getId()) {
+                users.set(i, updatedUser);
+                saveToJson();
+                System.out.println("Usuario actualizado.");
+                return;
+            }
+        }
+        System.out.println("No se encontró el usuario con ID " + updatedUser.getId());
+    }
+
+    @Override
+    public boolean removeById(int id) {
+        boolean removed = users.removeIf(u -> u.getId() == id);
+        if (removed) {
+            saveToJson();
+        }
+        return removed;
+    }
+
+    private void loadFromJson() {
         try {
+            // Verificar si el archivo existe antes de leerlo
+            File file = new File(archivo);
+            if (!file.exists()) {
+                System.out.println("Archivo de órdenes no encontrado. Creando uno nuevo...");
+                file.getParentFile().mkdirs(); // Crea la carpeta json/ si no existe
+                JsonUtiles.grabar(new JSONArray(), archivo);
+            }
+
             String jsonData = JsonUtiles.leer(archivo);
 
             if (jsonData.isEmpty() || jsonData.equals("[]")) {
@@ -54,7 +119,7 @@ public class UserRepository implements IRepository<User> {
 
         try {
             // Crear un backup antes de sobrescribir
-            JsonUtiles.grabar(array, "users_backup.json");
+            JsonUtiles.grabar(array, "json-backups/users_backup.json");
 
             // Grabar el archivo principal
             JsonUtiles.grabar(array, archivo);
@@ -65,52 +130,5 @@ public class UserRepository implements IRepository<User> {
         } finally {
             System.out.println("Operación de guardado finalizada.");
         }
-    }
-
-    // CRUD GENERICO
-    @Override
-    public void add(User user) {
-        users.add(user);
-        saveToJson();
-    }
-
-    @Override
-    public Optional<User> findById(int id) {
-        return users.stream()
-                .filter(u -> u.getId() == id)
-                .findFirst();
-    }
-
-    @Override
-    public Optional<User> findByName(String name) {
-        return users.stream()
-                .filter(u -> u.getName().equals(name))
-                .findFirst();
-    }
-
-    @Override
-    public List<User> getAll() {
-        return users;
-    }
-
-    public void update(User updatedUser) {
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getId() == updatedUser.getId()) {
-                users.set(i, updatedUser);
-                saveToJson();
-                System.out.println("Usuario actualizado.");
-                return;
-            }
-        }
-        System.out.println("No se encontró el usuario con ID " + updatedUser.getId());
-    }
-
-    @Override
-    public boolean removeById(int id) {
-        boolean removed = users.removeIf(u -> u.getId() == id);
-        if (removed) {
-            saveToJson();
-        }
-        return removed;
     }
 }

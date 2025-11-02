@@ -1,0 +1,9 @@
+[{
+    "lastName": "orellano",
+    "password": "1234",
+    "name": "lautaro",
+    "id": 1,
+    "type": "CUSTOMER",
+    "email": "lautaro@gmail.com",
+    "cart": {"products": []}
+}]
