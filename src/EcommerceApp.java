@@ -47,7 +47,6 @@ public class EcommerceApp {
                     // Seccion registro
                     user = menuManager.showMenuRegister(scanner);
 
-                    // Registro exitoso
                     if (user != null) {
                         authManager.register(user);
                         System.out.println("\nRegistro exitoso!!. Ya puede iniciar sesion");

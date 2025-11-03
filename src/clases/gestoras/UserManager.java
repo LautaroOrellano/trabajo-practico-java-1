@@ -13,7 +13,13 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserManager implements IUserManager {
-    UserRepository userRepository = new UserRepository();
+    private final UserRepository userRepository;
+    private final ProductRepository productRepository;
+
+    public UserManager(UserRepository userRepository, ProductRepository productRepository) {
+        this.userRepository = userRepository;
+        this.productRepository = productRepository;
+    }
 
     public void getAllUsers() {
         userRepository.getAll();
@@ -27,6 +33,11 @@ public class UserManager implements IUserManager {
                 );
     }
 
+    public void deleteUserById(int id) {
+        userRepository.removeById(id);
+    }
+
+    // Metodos logica de carrito
     public void addProductToCart(int userId, Product product) {
         userRepository.findById(userId)
                 .ifPresentOrElse(user -> {

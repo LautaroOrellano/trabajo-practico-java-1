@@ -16,12 +16,14 @@ import java.util.List;
 
 public class OrderManager implements IOrderManager {
     private final OrderRepository orderRepository;
-    private final UserRepository userRepository = new UserRepository();
+    private final UserRepository userRepository;
     private final ProductRepository productRepository;
 
-    public OrderManager () {
-        this.orderRepository = new OrderRepository();
-        this.productRepository = new ProductRepository();
+    public OrderManager (OrderRepository orderRepository, UserRepository userRepository,
+                         ProductRepository productRepository) {
+        this.orderRepository = orderRepository;
+        this.productRepository = productRepository;
+        this.userRepository = userRepository;
     }
 
     public void generateOrderFromCart(User user) {

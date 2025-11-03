@@ -17,6 +17,7 @@ public class Order {
     private final int id;
     private String numOrder;
     private int customerId;
+    private double totalPrice;
     private List<Product> productsList;
     private LocalDateTime localDateTime;
     private Status status;
@@ -28,6 +29,9 @@ public class Order {
         this.productsList = productList;
         this.localDateTime = localDateTime.now();
         this.status = Status.PENDING;
+        this.totalPrice = productList.stream()
+                .mapToDouble(Product::getPrice)
+                .sum();
     }
 
 
@@ -83,6 +87,14 @@ public class Order {
         this.status = status;
     }
 
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
     public JSONObject toJson()  {
         JSONObject obj = new JSONObject();
         try {
@@ -99,6 +111,7 @@ public class Order {
 
             obj.put("localDateTime", localDateTime.toString());
             obj.put("status", status.toString());
+            obj.put("totalPrice", totalPrice);
         } catch (JSONException e) {
             System.out.println("No se pudo convertir Order a Json");
         }
@@ -127,6 +140,7 @@ public class Order {
             idField.set(order, json.getInt("id"));
         } catch (Exception ignored) {}
 
+        order.setTotalPrice(json.getDouble("totalPrice"));
         return order;
     }
 
@@ -136,8 +150,10 @@ public class Order {
                 "id=" + id +
                 ", numOrder='" + numOrder + '\'' +
                 ", customerId=" + customerId +
-                ", products=" + productsList +
+                ", totalPrice=" + totalPrice +
+                ", productsList=" + productsList +
                 ", localDateTime=" + localDateTime +
+                ", status=" + status +
                 '}';
     }
 }

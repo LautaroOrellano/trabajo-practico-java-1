@@ -6,14 +6,35 @@ import clases.entidades.users.Customer;
 import clases.entidades.users.User;
 import enums.Rol;
 import exceptions.ProductNotFoundException;
+import repository.OrderRepository;
+import repository.ProductRepository;
+import repository.UserRepository;
 
 import java.util.Scanner;
 
 public class MenuManager {
 
-    private ProductManager productManager = new ProductManager();
-    private UserManager userManager = new UserManager();
-    private OrderManager orderManager = new OrderManager();
+    // Repositorios compartidos
+    private final ProductRepository productRepository = new ProductRepository();
+    private final UserRepository userRepository = new UserRepository();
+    private final OrderRepository orderRepository = new OrderRepository();
+
+    // Managers que usan los repositorios compartidos
+    private final ProductManager productManager;
+    private final UserManager userManager;
+    private final OrderManager orderManager;
+
+    public MenuManager() {
+        this.productManager = new ProductManager(productRepository);
+        this.userManager = new UserManager(userRepository, productRepository);
+        this.orderManager = new OrderManager(orderRepository, userRepository, productRepository);
+    }
+
+    //Getters
+    public ProductManager getProductManager() { return productManager; }
+    public UserManager getUserManager() { return userManager; }
+    public OrderManager getOrderManager() { return orderManager; }
+
 
     public void showWelcomeMenu() {
         System.out.println("------------------------------------");
@@ -236,15 +257,19 @@ public class MenuManager {
                 userManager.clearMeCart(user.getId());
             }
             case 7 -> {
+                // Generar orden de compra
                 orderManager.generateOrderFromCart(user);
             }
-            case 8 -> orderManager.getMeOrder();
-            case 0 -> System.out.printf("Hasta pronto");
+            case 8 ->
+                    // Ver orden de compra
+                    orderManager.getMeOrder();
+            case 9 ->
+                    // Ver todas mis ordenes de compras
+                    orderManager.getAllOrder();
+            case 0 ->
+                    // Salir del programa
+                    System.out.printf("Hasta pronto");
             default -> System.out.println("Opcion incorrecta.");
         }
-    }
-
-    public ProductManager getProductManager() {
-        return productManager;
     }
 }
