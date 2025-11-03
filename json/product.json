@@ -4,13 +4,13 @@
         "name": "teclado",
         "description": "buen teclado",
         "id": 3,
-        "stock": 12
+        "stock": 7
     },
     {
         "price": 234.4,
         "name": "mouse",
         "description": "buen mouse",
         "id": 4,
-        "stock": 3
+        "stock": 0
     }
 ]

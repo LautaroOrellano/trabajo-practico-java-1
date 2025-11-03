@@ -11,10 +11,6 @@ import java.util.List;
 public class ProductManager implements IProducManager {
     private IRepository<Product> productRepository;
 
-    public ProductManager () {
-        this.productRepository = new ProductRepository();
-    }
-
     public ProductManager(ProductRepository repository) {
         this.productRepository = repository;
     }
