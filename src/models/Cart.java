@@ -4,37 +4,44 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Cart {
-    private List<Product> products;
+    private List<CartItem> items;
 
     public Cart() {
-        this.products = new ArrayList<>();
+        this.items = new ArrayList<>();
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public List<CartItem> getItems() {
+        return items;
     }
 
-    public void addProduct(Product product) {
-        if (product != null){
-            products.add(product);
+    public void addProduct(Product product, int quantity) {
+        if (product == null || quantity <= 0) return;
+
+        for (CartItem item : items) {
+            if (item.getProduct().getId() == product.getId()) {
+                item.setQuantity(item.getQuantity() + quantity);
+                return;
+            }
         }
+
+        items.add(new CartItem(product, quantity));
     }
 
-    public void removeProduct(Product product) {
-        products.remove(product);
+    public void removeProduct(CartItem item) {
+        items.remove(item);
     }
 
     public void clear() {
-        products.clear();
+        items.clear();
     }
 
     public double getTotalPrice() {
-        return products.stream()
-                .mapToDouble(Product::getPrice)
+        return items.stream()
+                .mapToDouble(CartItem::getTotalPrice)
                 .sum();
     }
 
     public boolean isEmpty() {
-        return products.isEmpty();
+        return items.isEmpty();
     }
 }

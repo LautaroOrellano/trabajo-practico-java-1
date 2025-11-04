@@ -1,5 +1,6 @@
 package repository;
 
+import models.CartItem;
 import models.Order;
 import models.Product;
 import enums.Status;
@@ -129,11 +130,21 @@ public class OrderRepository implements IRepository<Order> {
             obj.put("customerId", o.getCustomerId());
 
             // Product maneja su propio toJson()
-            JSONArray productsArray = new JSONArray();
-            for (Product p : o.getProductsList()) {
-                productsArray.put(ProductRepository.toJson(p));
+            JSONArray itemsArray = new JSONArray();
+            for (CartItem item : o.getProductsList()) {
+                JSONObject itemObj = new JSONObject();
+                Product p = item.getProduct();
+
+                itemObj.put("id", p.getId());
+                itemObj.put("name", p.getName());
+                itemObj.put("description", p.getDescription());
+                itemObj.put("price", p.getPrice());
+                itemObj.put("stock", p.getStock());
+                itemObj.put("quantity", item.getQuantity());
+
+                itemsArray.put(itemObj);
             }
-            obj.put("productsList", productsArray);
+            obj.put("productsList", itemsArray);
 
             obj.put("localDateTime", o.getLocalDateTime().toString());
             obj.put("status", o.getStatus().toString());
@@ -145,22 +156,35 @@ public class OrderRepository implements IRepository<Order> {
     }
 
     // Conversión de JSONObject → Order
-    private Order fromJson(JSONObject json) throws JSONException{
+    private Order fromJson(JSONObject json) throws JSONException {
         int customerId = json.getInt("customerId");
 
-        // Reconstruir lista de productos desde JSON
-        List<Product> productsList = new ArrayList<>();
-        JSONArray productsArray = json.getJSONArray("productsList");
-        for (int i = 0; i < productsArray.length(); i++) {
-            productsList.add(ProductRepository.fromJson(productsArray.getJSONObject(i)));
+        // Reconstruir lista de CartItem desde JSON
+        List<CartItem> itemsList = new ArrayList<>();
+        JSONArray itemsArray = json.getJSONArray("productsList");
+        for (int i = 0; i < itemsArray.length(); i++) {
+            JSONObject itemObj = itemsArray.getJSONObject(i);
+
+            Product p = new Product(
+                    itemObj.getString("name"),
+                    itemObj.getString("description"),
+                    itemObj.getDouble("price"),
+                    itemObj.getInt("stock")
+            );
+            p.setId(itemObj.getInt("id"));
+
+            int quantity = itemObj.getInt("quantity");
+            itemsList.add(new CartItem(p, quantity));
         }
 
-        Order order = new Order(customerId, productsList);
+        // Crear la orden con lista de CartItem
+        Order order = new Order(customerId, itemsList);
+
         order.setNumOrder(json.getString("numOrder"));
         order.setStatus(Status.valueOf(json.getString("status")));
         order.setLocalDateTime(LocalDateTime.parse(json.getString("localDateTime")));
 
-        // Opcional: mantener el ID original
+        // Mantener el ID original
         try {
             Field idField = Order.class.getDeclaredField("id");
             idField.setAccessible(true);

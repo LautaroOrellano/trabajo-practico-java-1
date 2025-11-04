@@ -1,6 +1,7 @@
 package models.users;
 
 import models.Cart;
+import models.CartItem;
 import models.Product;
 import enums.Rol;
 
@@ -83,15 +84,17 @@ public abstract class User {
     }
 
     // Manejo de carrito en usuario
-    public void addProductToCart(Product p) {
+    public void addProductToCart(Product p, int quantity) {
         if (cart == null) {
             cart = new Cart();
         }
-        cart.addProduct(p);
+        cart.addProduct(p, quantity);
     }
 
-    public void removeProductFromCart(Product p) {
-        cart.removeProduct(p);
+    public void removeProductFromCart(CartItem i) {
+        if (cart == null) {
+            cart.removeProduct(i);
+        }
     }
 
     public void clearCart() {

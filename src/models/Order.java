@@ -11,19 +11,19 @@ public class Order {
     private String numOrder;
     private int customerId;
     private double totalPrice;
-    private List<Product> productsList;
+    private List<CartItem> productsList;
     private LocalDateTime localDateTime;
     private Status status;
 
-    public Order(int customerId, List<Product> productList) {
+    public Order(int customerId, List<CartItem> items) {
         this.id = AUTO_INCREMENT++;
         this.numOrder = String.format("#%06d", id); //mismo id con 6 ceros adelante
         this.customerId = customerId;
-        this.productsList = productList;
+        this.productsList = items;
         this.localDateTime = localDateTime.now();
         this.status = Status.PENDING;
-        this.totalPrice = productList.stream()
-                .mapToDouble(Product::getPrice)
+        this.totalPrice = items.stream()
+                .mapToDouble(CartItem::getTotalPrice)
                 .sum();
     }
 
@@ -55,11 +55,11 @@ public class Order {
         this.customerId = customerId;
     }
 
-    public List<Product> getProductsList() {
+    public List<CartItem> getProductsList() {
         return productsList;
     }
 
-    public void setProductsList(List<Product> productsList) {
+    public void setProductsList(List<CartItem> productsList) {
         this.productsList = productsList;
     }
 
