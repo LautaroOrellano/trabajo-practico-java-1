@@ -1,7 +1,7 @@
 package repository;
 
-import clases.entidades.Order;
-import clases.entidades.Product;
+import models.Order;
+import models.Product;
 import enums.Status;
 import interfaces.IRepository;
 import org.json.JSONArray;

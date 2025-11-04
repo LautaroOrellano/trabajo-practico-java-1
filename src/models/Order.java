@@ -1,4 +1,4 @@
-package clases.entidades;
+package models;
 
 import enums.Status;
 import java.time.LocalDateTime;

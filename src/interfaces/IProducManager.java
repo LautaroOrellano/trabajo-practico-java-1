@@ -1,6 +1,6 @@
 package interfaces;
 
-import clases.entidades.Product;
+import models.Product;
 
 import java.util.List;
 

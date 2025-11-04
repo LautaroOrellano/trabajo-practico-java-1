@@ -1,7 +1,7 @@
-package clases.entidades.users;
+package models.users;
 
-import clases.entidades.Cart;
-import clases.entidades.Product;
+import models.Cart;
+import models.Product;
 import enums.Rol;
 
 public abstract class User {

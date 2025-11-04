@@ -1,6 +1,6 @@
 package service;
 
-import clases.entidades.Product;
+import models.Product;
 import exceptions.ItemOutOfStockException;
 import interfaces.IUserManager;
 import repository.ProductRepository;

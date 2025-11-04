@@ -1,10 +1,7 @@
 package interfaces;
 
 
-import clases.entidades.Order;
-import clases.entidades.users.User;
-
-import java.util.List;
+import models.users.User;
 
 public interface IOrderManager {
 

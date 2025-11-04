@@ -1,7 +1,7 @@
 package utils.cart;
 
-import clases.entidades.Cart;
-import clases.entidades.Product;
+import models.Cart;
+import models.Product;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

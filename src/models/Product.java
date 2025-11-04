@@ -1,4 +1,4 @@
-package clases.entidades;
+package models;
 
 import exceptions.ItemOutOfStockException;
 import exceptions.NegativeStockException;

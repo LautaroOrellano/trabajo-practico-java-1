@@ -1,6 +1,6 @@
 package service;
 
-import clases.entidades.users.User;
+import models.users.User;
 import repository.UserRepository;
 
 public class AuthService {

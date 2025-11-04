@@ -1,9 +1,9 @@
 package service;
 
-import clases.entidades.Product;
-import clases.entidades.users.Admin;
-import clases.entidades.users.Customer;
-import clases.entidades.users.User;
+import models.Product;
+import models.users.Admin;
+import models.users.Customer;
+import models.users.User;
 import enums.Rol;
 import repository.OrderRepository;
 import repository.ProductRepository;

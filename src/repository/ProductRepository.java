@@ -1,6 +1,6 @@
 package repository;
 
-import clases.entidades.Product;
+import models.Product;
 import interfaces.IRepository;
 import org.json.JSONArray;
 import org.json.JSONException;
