@@ -4,7 +4,7 @@
         "name": "Teclado Mecánico RGB",
         "description": "Teclado mecánico con switches rojos y retroiluminación RGB personalizable.",
         "id": 1,
-        "stock": 12
+        "stock": 6
     },
     {
         "price": 89.5,
@@ -53,7 +53,7 @@
         "name": "Webcam Logitech C920",
         "description": "Webcam Full HD 1080p con enfoque automático y micrófonos estéreo.",
         "id": 8,
-        "stock": 9
+        "stock": 5
     },
     {
         "price": 139.99,

@@ -1,5 +1,7 @@
 package service;
 
+import models.Cart;
+import models.CartItem;
 import models.Product;
 import exceptions.ItemOutOfStockException;
 import interfaces.IUserManager;
@@ -34,12 +36,12 @@ public class UserService implements IUserManager {
     }
 
     // Metodos logica de carrito
-    public void addProductToCart(int userId, Product product) {
+    public void addProductToCart(int userId, Product product, int quantity) {
         userRepository.findById(userId)
                 .ifPresentOrElse(user -> {
-                    if (product.getStock() > 0) {
-                        user.addProductToCart(product);
-                         product.setStock(product.getStock() - 1 );
+                    if (product.getStock() >= quantity) {
+                        user.addProductToCart(product, quantity);
+                         product.setStock(product.getStock() - quantity );
 
                          userRepository.update(user);
                     } else {
@@ -54,43 +56,61 @@ public class UserService implements IUserManager {
     public void getProductsToMeCart(int userId) {
         userRepository.findById(userId)
                 .ifPresentOrElse(user -> {
-                    List<Product> cart = user.getCart().getProducts();
-
-                    if (user.getCart().isEmpty()) {
-                        System.out.println("El carrito esta vacío");
-                    } else {
-                        System.out.println("---------- PRODUCTOS EN CARRITO ----------");
-                        for (int i = 0; i < cart.size(); i++) {
-                            System.out.println((i + 1) + ". " + cart.get(i).getName());
-                        }
-                        System.out.println("-------------------------------------------");
+                    Cart cart = user.getCart();
+                    if (cart == null || cart.isEmpty()) {
+                        System.out.println("El carrito está vacío");
+                        return;
                     }
+
+                    List<CartItem> items = cart.getItems();
+                    System.out.println("---------- PRODUCTOS EN CARRITO ----------");
+                    for (int i = 0; i < items.size(); i++) {
+                        CartItem item = items.get(i);
+                        System.out.println((i + 1) + ". " + item.getProduct().getName() +
+                                          " | Cantidad: " + item.getQuantity() +
+                                          " | Precio unitario: " + item.getProduct().getPrice() +
+                                          " | Subtotal: " + item.getTotalPrice());
+                    }
+                    System.out.println("-------------------------------------------");
+                    System.out.println("Total carrito: " + cart.getTotalPrice());
                 },
                     ()-> {
                         System.out.println("Carrito no encontrado");
                     });
     }
 
-    public void deleteProductToCart(int userId, int i) {
+    public void deleteProductToCart(int userId, int i, int quantity) {
         userRepository.findById(userId)
                 .ifPresentOrElse( user -> {
-                    List<Product> cart = user.getCart().getProducts();
-
-                    if (cart.isEmpty()) {
+                    Cart cart = user.getCart();
+                    if (cart == null || cart.isEmpty()) {
                         System.out.println("El carrito esta vacío.");
                     }
 
-                    if (i < 0 || i >= cart.size()) {
+                    List<CartItem> items = cart.getItems();
+
+                    if (i < 0 || i >= items.size()) {
                         System.out.println("Opción inválida");
                         return;
                     }
 
-                    Product product = cart.get(i);
-                    user.removeProductFromCart(product);
-                    product.setStock(product.getStock() + 1 );
+                    CartItem item = items.get(i);
+                    Product product = item.getProduct();
+
+                    // Si la cantidad a eliminar >= cantidad en el carrito, eliminar todo
+                    if (quantity >= item.getQuantity()) {
+                        user.removeProductFromCart(item);
+                        product.setStock(product.getStock() + item.getQuantity());
+                        System.out.println("Se eliminó todo el producto '" + product.getName() + "' del carrito.");
+                    } else {
+                        // Si es menor, solo restar la cantidad
+                        item.setQuantity(item.getQuantity() - quantity);
+                        product.setStock(product.getStock() + quantity);
+                        System.out.println("Se eliminaron " + quantity + " unidades de '" + product.getName() +
+                                "' del carrito correctamente.");
+                    }
 
                     userRepository.update(user);
-                    System.out.println("El producto '" + product.getName() + "' fue eliminado correctamente.");
                 }, () -> System.out.println("Usuario ID: " + userId + " no encontrad."));
     }
 

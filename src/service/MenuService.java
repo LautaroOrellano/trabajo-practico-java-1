@@ -224,6 +224,7 @@ public class MenuService {
                 productManager.showAllProductsWithOption();
 
                 int optionCart = -1;
+                int quantity = 0;
 
                 while(true) {
                     System.out.println("Elija el número del producto (0 para cancelar): ");
@@ -244,11 +245,37 @@ public class MenuService {
                     Product selected = productManager.getProductByIndex(optionCart - 1);
                     if (selected == null) {
                         System.out.println("Opción fuera de rango");
-                    } else {
-                        userManager.addProductToCart(user.getId(), selected);
-                        System.out.println("✅ Producto agregado al carrito: " + selected.getName());
+                        continue;
+                    }
+
+                    while (true) {
+                        System.out.println("Elija la cantidad a agregar: ");
+                        if (!scanner.hasNextInt()) {
+                            System.out.println("Ingrese un número válido");
+                            scanner.nextLine();
+                            continue;
+                        }
+
+                        quantity = scanner.nextInt();
+                        scanner.nextLine();
+
+                        if (quantity <= 0) {
+                            System.out.println("La cantidad debe ser mayor a 0");
+                            continue;
+                        }
+
+                        if (quantity > selected.getStock()) {
+                            System.out.println("Stock insuficiente. Disponible: " + selected.getStock());
+                            continue;
+                        }
+
                         break;
                     }
+                    userManager.addProductToCart(user.getId(), selected, quantity);
+                    System.out.println("✅ Producto agregado al carrito: " + selected.getName());
+                    System.out.println("Cantidad: " + quantity);
+                    break;
+
                 }
             }
             case 4 ->
@@ -258,11 +285,41 @@ public class MenuService {
                 // Eliminar producto de carrito
                 userManager.getProductsToMeCart(user.getId());
 
-                System.out.print("Ingrese el número del producto que desea eliminar: ");
-                int optionDelete = scanner.nextInt();
-                scanner.nextLine();
+                int optionDelete = -1;
+                while (true) {
+                    System.out.print("Ingrese el número del producto que desea eliminar: ");
+                    if (!scanner.hasNextInt()) {
+                        System.out.println("Debe ingresar un número válido.");
+                        scanner.nextLine();
+                        continue;
+                    }
+                    optionDelete = scanner.nextInt();
+                    scanner.nextLine();
+                    if (optionDelete <= 0) {
+                        System.out.println("El número debe ser mayor a cero.");
+                        continue;
+                    }
+                    break;
+                }
 
-                userManager.deleteProductToCart(user.getId(), optionDelete - 1);
+                int quantityDelete = -1;
+                while (true) {
+                    System.out.print("Ingrese la cantidad a eliminar: ");
+                    if (!scanner.hasNextInt()) {
+                        System.out.println("Debe ingresar un número válido.");
+                        scanner.nextLine();
+                        continue;
+                    }
+                    quantityDelete = scanner.nextInt();
+                    scanner.nextLine();
+                    if (quantityDelete <= 0) {
+                        System.out.println("La cantidad debe ser mayor a cero.");
+                        continue;
+                    }
+                    break;
+                }
+
+                userManager.deleteProductToCart(user.getId(), optionDelete - 1, quantityDelete);
 
             }
             case 6 -> {

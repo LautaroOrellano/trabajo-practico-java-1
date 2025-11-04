@@ -1,6 +1,7 @@
 package service;
 
 import models.Cart;
+import models.CartItem;
 import models.Order;
 import models.Product;
 import models.users.User;
@@ -30,20 +31,23 @@ public class OrderService implements IOrderManager {
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         Cart cart = repoUser.getCart();
-        if (cart == null || cart.getProducts().isEmpty()) {
+        if (cart == null || cart.getItems().isEmpty()) {
             throw new RuntimeException("El carrito está vacío, no se puede generar la orden.");
         }
 
         // Validamos stock antes de confirmar
-        for (Product product : cart.getProducts()) {
-            if (product.getStock() <= 0) {
+        for (CartItem item : cart.getItems()) {
+            Product product = item.getProduct();
+            int quantity = item.getQuantity();
+
+            if (product.getStock() < quantity) {
                 throw new ItemOutOfStockException("Sin stock para " + product.getName());
             }
-            product.setStock(product.getStock() - 1);
+            product.setStock(product.getStock() - quantity);
         }
 
         // Creamos la orden con los mismos productos del carrito
-        Order order = new Order(repoUser.getId(), new ArrayList<>(cart.getProducts()));
+        Order order = new Order(repoUser.getId(), new ArrayList<>(cart.getItems()));
 
         // Total usando el método del carrito
         double total = cart.getTotalPrice();
