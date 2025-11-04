@@ -1,15 +1,71 @@
-[{
-    "localDateTime": "2025-11-03T18:31:33.197196500",
-    "numOrder": "#000001",
-    "productsList": [{
-        "price": 123.4,
-        "name": "teclado",
-        "description": "buen teclado",
+[
+    {
+        "localDateTime": "2025-11-03T18:31:33.197196500",
+        "numOrder": "#000001",
+        "productsList": [{
+            "price": 123.4,
+            "name": "teclado",
+            "description": "buen teclado",
+            "id": 3,
+            "stock": 7
+        }],
+        "totalPrice": 123.4,
+        "customerId": 1,
+        "id": 1,
+        "status": "PENDING"
+    },
+    {
+        "localDateTime": "2025-11-04T01:02:36.655203900",
+        "numOrder": "#000002",
+        "productsList": [{
+            "price": 123.4,
+            "name": "teclado",
+            "description": "buen teclado",
+            "id": 3,
+            "stock": 5
+        }],
+        "totalPrice": 123.4,
+        "customerId": 1,
+        "id": 2,
+        "status": "PENDING"
+    },
+    {
+        "localDateTime": "2025-11-04T10:14:55.391577700",
+        "numOrder": "#000003",
+        "productsList": [{
+            "price": 289.99,
+            "name": "Silla Gamer Reclinable",
+            "description": "Silla ergonómica con apoyabrazos ajustables y respaldo reclinable hasta 180°.",
+            "id": 5,
+            "stock": 1
+        }],
+        "totalPrice": 289.99,
+        "customerId": 1,
         "id": 3,
-        "stock": 7
-    }],
-    "totalPrice": 123.4,
-    "customerId": 1,
-    "id": 1,
-    "status": "PENDING"
-}]
+        "status": "PENDING"
+    },
+    {
+        "localDateTime": "2025-11-04T10:22:08.094752100",
+        "numOrder": "#000004",
+        "productsList": [
+            {
+                "price": 149.9,
+                "name": "Auriculares HyperX Cloud II",
+                "description": "Auriculares con sonido envolvente 7.1 y micrófono desmontable.",
+                "id": 12,
+                "stock": 3
+            },
+            {
+                "price": 29.99,
+                "name": "Alfombrilla XXL",
+                "description": "Mousepad extendido antideslizante con bordes reforzados y base de goma.",
+                "id": 6,
+                "stock": 18
+            }
+        ],
+        "totalPrice": 179.89000000000001,
+        "customerId": 1,
+        "id": 4,
+        "status": "PENDING"
+    }
+]

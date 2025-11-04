@@ -72,6 +72,7 @@ public class ProductManager implements IProducManager {
         return productRepository.getAll();
     }
 
+    // Muestro una lista de producto customizada
     @Override
     public void getAllProductsCustom() {
         if (productRepository.getAll().isEmpty()) {
@@ -79,9 +80,26 @@ public class ProductManager implements IProducManager {
             return;
         }
         productRepository.getAllCustom();
-
     }
 
+    // Muestro una lista de producto con solo el nombre
+    @Override
+    public void showAllProductsWithOption() {
+        if (productRepository.getAll().isEmpty()) {
+            System.out.println("No hay productos cargados actualmente.");
+            return;
+        }
+        productRepository.showAllWithIndex();
+    }
+
+    @Override
+    public Product getProductByIndex(int i) {
+        List<Product> products = productRepository.getAll();
+        if ( i >= 0 && i < products.size()) {
+            return products.get(i);
+        }
+        return null;
+    }
 
     @Override
     public void updateProduct(int id, String name, String description, double price, int stock) {

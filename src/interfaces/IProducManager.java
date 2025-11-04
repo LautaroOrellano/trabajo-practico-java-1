@@ -9,6 +9,8 @@ public interface IProducManager {
     void createProduct(String name, String description, double price,int stock);
     void getAllProducts();
     void getAllProductsCustom();
+    void showAllProductsWithOption();
+    Product getProductByIndex(int i);
     List<Product> getProducts();
     void searchProductById(int id);
     void searchProductByName(String name);

@@ -77,16 +77,18 @@ public class EcommerceApp {
                     menuManager.showMenu(user);
                     System.out.println("Elige una opcion correcta");
 
-                    if (!scanner.hasNextInt()) {
+                    while (!scanner.hasNextInt()) {
                         System.out.println("Debes ingresar un número válido");
                         scanner.nextLine();
-                        continue;
                     }
 
                     optionMenu = scanner.nextInt();
                     scanner.nextLine();
 
-                    menuManager.processOption(user, optionMenu, scanner);
+                    if(optionMenu != 0){
+                        menuManager.processOption(user, optionMenu, scanner);
+                    }
+
                 } catch (Exception e) {
                     System.out.println("Ocurrio un error: " + e.getMessage());
                 }

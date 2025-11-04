@@ -8,6 +8,6 @@ public interface IUserManager {
     void searchUserById(int id);
     void addProductToCart(int userId, Product product);
     void getProductsToMeCart(int userId);
-    void deleteProductToCart(int userId, Product product);
+    void deleteProductToCart(int userId, int i);
 
 }

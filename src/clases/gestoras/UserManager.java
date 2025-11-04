@@ -46,7 +46,6 @@ public class UserManager implements IUserManager {
                          product.setStock(product.getStock() - 1 );
 
                          userRepository.update(user);
-                         System.out.println("Producto " + product.getName() + " agregado" );
                     } else {
                         throw new ItemOutOfStockException("Stock insuficiente");
                     }
@@ -59,18 +58,16 @@ public class UserManager implements IUserManager {
     public void getProductsToMeCart(int userId) {
         userRepository.findById(userId)
                 .ifPresentOrElse(user -> {
+                    List<Product> cart = user.getCart().getProducts();
+
                     if (user.getCart().isEmpty()) {
                         System.out.println("El carrito esta vacío");
                     } else {
-                        System.out.println("----------------------------");
-                        System.out.println("| Productos en el carrito: |");
-                        System.out.println("----------------------------");
-                        user.getCart().getProducts().forEach(p -> {
-                            System.out.println("Nombre: " + p.getName());
-                            System.out.println("Descripcion: " + p.getDescription());
-                            System.out.println("Precio: " + p.getPrice());
-                            System.out.println("----------------------------");
-                        });
+                        System.out.println("---------- PRODUCTOS EN CARRITO ----------");
+                        for (int i = 0; i < cart.size(); i++) {
+                            System.out.println((i + 1) + ". " + cart.get(i).getName());
+                        }
+                        System.out.println("-------------------------------------------");
                     }
                 },
                     ()-> {
@@ -78,23 +75,27 @@ public class UserManager implements IUserManager {
                     });
     }
 
-    public void deleteProductToCart(int userId, Product product) {
+    public void deleteProductToCart(int userId, int i) {
         userRepository.findById(userId)
                 .ifPresentOrElse( user -> {
-                            if (user.getCart().isEmpty()) {
-                                System.out.println("El carrito esta vacío");
-                            } else {
-                                user.removeProductFromCart(product);
-                                product.setStock(product.getStock() + 1);
+                    List<Product> cart = user.getCart().getProducts();
 
-                                userRepository.update(user);
-                                System.out.println("El producto fue eliminado correctamente!");
-                            }
-                        },
-                            () -> {
-                                System.out.println("Usuario con ID: " + userId + " no encontrado.");
-                            }
-                );
+                    if (cart.isEmpty()) {
+                        System.out.println("El carrito esta vacío.");
+                    }
+
+                    if (i < 0 || i >= cart.size()) {
+                        System.out.println("Opción inválida");
+                        return;
+                    }
+
+                    Product product = cart.get(i);
+                    user.removeProductFromCart(product);
+                    product.setStock(product.getStock() + 1 );
+
+                    userRepository.update(user);
+                    System.out.println("El producto '" + product.getName() + "' fue eliminado correctamente.");
+                }, () -> System.out.println("Usuario ID: " + userId + " no encontrad."));
     }
 
     public void clearMeCart(int userId) {

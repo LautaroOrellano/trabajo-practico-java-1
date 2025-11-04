@@ -2,6 +2,7 @@ package repository;
 
 import clases.entidades.Order;
 import clases.entidades.Product;
+import enums.Status;
 import interfaces.IRepository;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -9,6 +10,8 @@ import org.json.JSONObject;
 import utils.JsonUtiles;
 
 import java.io.File;
+import java.lang.reflect.Field;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -51,6 +54,11 @@ public class OrderRepository implements IRepository<Order> {
     }
 
     @Override
+    public void showAllWithIndex(){
+
+    }
+
+    @Override
     public void update(Order entity) {
 
     }
@@ -81,7 +89,7 @@ public class OrderRepository implements IRepository<Order> {
             JSONArray array = new JSONArray(jsonData);
             for (int i = 0; i < array.length(); i++) {
                 JSONObject obj = array.getJSONObject(i);
-                Order order = Order.fromJson(obj);
+                Order order = fromJson(obj);
                 orders.add(order);
             }
 
@@ -94,7 +102,7 @@ public class OrderRepository implements IRepository<Order> {
     private void saveToJson() {
         JSONArray array = new JSONArray();
         for (Order o : orders) {
-            array.put(o.toJson());
+            array.put(toJson(o));
         }
 
         try {
@@ -108,7 +116,58 @@ public class OrderRepository implements IRepository<Order> {
             System.out.println("Error al guardar usuarios: " + e.getMessage());
             e.printStackTrace();
         } finally {
-            System.out.println("Operación de guardado finalizada.");
+            System.out.println("Back-up 'orders.json' creado correctamente.");
         }
+    }
+
+    // Conversion de Order -> JsonObject
+    private JSONObject toJson(Order o)  {
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("id", o.getId());
+            obj.put("numOrder", o.getNumOrder());
+            obj.put("customerId", o.getCustomerId());
+
+            // Product maneja su propio toJson()
+            JSONArray productsArray = new JSONArray();
+            for (Product p : o.getProductsList()) {
+                productsArray.put(ProductRepository.toJson(p));
+            }
+            obj.put("productsList", productsArray);
+
+            obj.put("localDateTime", o.getLocalDateTime().toString());
+            obj.put("status", o.getStatus().toString());
+            obj.put("totalPrice", o.getTotalPrice());
+        } catch (JSONException e) {
+            System.out.println("No se pudo convertir Order a Json");
+        }
+        return obj;
+    }
+
+    // Conversión de JSONObject → Order
+    private Order fromJson(JSONObject json) throws JSONException{
+        int customerId = json.getInt("customerId");
+
+        // Reconstruir lista de productos desde JSON
+        List<Product> productsList = new ArrayList<>();
+        JSONArray productsArray = json.getJSONArray("productsList");
+        for (int i = 0; i < productsArray.length(); i++) {
+            productsList.add(ProductRepository.fromJson(productsArray.getJSONObject(i)));
+        }
+
+        Order order = new Order(customerId, productsList);
+        order.setNumOrder(json.getString("numOrder"));
+        order.setStatus(Status.valueOf(json.getString("status")));
+        order.setLocalDateTime(LocalDateTime.parse(json.getString("localDateTime")));
+
+        // Opcional: mantener el ID original
+        try {
+            Field idField = Order.class.getDeclaredField("id");
+            idField.setAccessible(true);
+            idField.set(order, json.getInt("id"));
+        } catch (Exception ignored) {}
+
+        order.setTotalPrice(json.getDouble("totalPrice"));
+        return order;
     }
 }

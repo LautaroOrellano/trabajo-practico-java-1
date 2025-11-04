@@ -1,11 +1,14 @@
 package repository;
 
+import clases.entidades.users.Admin;
+import clases.entidades.users.Customer;
 import clases.entidades.users.User;
 import interfaces.IRepository;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import utils.JsonUtiles;
+import utils.cart.CartJson;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -52,6 +55,11 @@ public class UserRepository implements IRepository<User> {
 
     }
 
+    @Override
+    public void showAllWithIndex(){
+
+    }
+
     public void update(User updatedUser) {
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i).getId() == updatedUser.getId()) {
@@ -90,9 +98,10 @@ public class UserRepository implements IRepository<User> {
                 JsonUtiles.grabar(new JSONArray(), archivo);
             } else {
                 JSONArray array = new JSONArray(jsonData);
+
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject obj = array.getJSONObject(i);
-                    User u = User.fromJson(obj);
+                    User u = fromJson(obj);
                     users.add(u);
                 }
             }
@@ -114,7 +123,7 @@ public class UserRepository implements IRepository<User> {
     private void saveToJson() {
         JSONArray array = new JSONArray();
         for (User u : users) {
-            array.put(u.toJson());
+            array.put(toJson(u));
         }
 
         try {
@@ -128,7 +137,58 @@ public class UserRepository implements IRepository<User> {
             System.out.println("Error al guardar usuarios: " + e.getMessage());
             e.printStackTrace();
         } finally {
-            System.out.println("Operación de guardado finalizada.");
+            System.out.println("Back-up 'users.json' creado correctamente.");
         }
+    }
+
+    // De Json a User
+    public static User fromJson(JSONObject obj) throws JSONException {
+        String type = obj.optString("type", "Customer");
+        if (type.equalsIgnoreCase("Admin")) {
+            Admin admin = new Admin(
+                    obj.getString("name"),
+                    obj.getString("lastName"),
+                    obj.getString("email"),
+                    obj.getString("password")
+            );
+            admin.setId(obj.getInt("id")); // Seteo id fuera de constructor por que no se los paso a las subclses
+            return admin;
+        } else {
+            Customer customer = new Customer(
+                    obj.getString("name"),
+                    obj.getString("lastName"),
+                    obj.getString("email"),
+                    obj.getString("password")
+            );
+            customer.setId(obj.getInt("id"));
+            if (obj.has("cart") && !obj.isNull("cart")) {
+                customer.setCart(CartJson.fromJson(obj.getJSONObject("cart")));
+            }
+            return customer;
+        }
+    }
+
+    // Mapeador de User a JSON
+    public JSONObject toJson(User u) {
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("id", u.getId());
+            obj.put("type", u.getRol().toString());
+            obj.put("name", u.getName());
+            obj.put("lastName", u.getLastName());
+            obj.put("email", u.getEmail());
+            obj.put("password", u.getPassword());
+
+
+            if (u.getCart() == null) {
+                obj.put("cart", new JSONArray());
+            } else {
+                obj.put("cart", CartJson.toJson(u.getCart()));
+            }
+
+        } catch (JSONException e) {
+            System.out.println("Error convirtiendo User a JSON");
+        }
+        return obj;
     }
 }

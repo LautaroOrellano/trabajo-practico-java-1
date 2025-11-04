@@ -2,8 +2,6 @@ package clases.entidades;
 
 import exceptions.ItemOutOfStockException;
 import exceptions.NegativeStockException;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class Product {
 
@@ -45,6 +43,8 @@ public class Product {
         return id;
     }
 
+    public void setId(int id){this.id = id;}
+
     public String getName() {
         return name;
     }
@@ -78,34 +78,6 @@ public class Product {
             throw new NegativeStockException("El stock no puede ser negativo");
         }
         this.stock = stock;
-    }
-
-    public JSONObject toJson() {
-        JSONObject obj = new JSONObject();
-        try {
-            obj.put("id", id);
-            obj.put("name", name);
-            obj.put("description", description);
-            obj.put("price", price);
-            obj.put("stock", stock);
-        } catch (JSONException e) {
-            System.out.println("No se pudo convertir Product a Json");
-        }
-        return obj;
-    }
-
-    public static Product fromJson(JSONObject json) throws JSONException {
-        Product p = new Product(
-                json.getString("name"),
-                json.getString("description"),
-                json.getDouble("price"),
-                json.getInt("stock")
-        );
-        p.id = json.getInt("id");
-        if (p.id >= AUTO_INCREMENT) {
-            AUTO_INCREMENT = p.id + 1;
-        }
-        return p;
     }
 
     @Override

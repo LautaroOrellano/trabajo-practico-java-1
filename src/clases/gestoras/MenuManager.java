@@ -222,18 +222,34 @@ public class MenuManager {
             case 3 -> {
                 // Agregar producto al carrito
                 System.out.println("Que producto desea agregar al carrito?");
-                String name = scanner.nextLine();
-                try {
-                    Product prod = productManager.productByNameAObject(name);
-                    if (prod != null) {
-                        userManager.addProductToCart(user.getId(), prod);
-                    } else {
-                        throw new ProductNotFoundException("Producto no encontrado");
+                productManager.showAllProductsWithOption();
+
+                int optionCart = -1;
+
+                while(true) {
+                    System.out.println("Elija el número del producto (0 para cancelar): ");
+                    if (!scanner.hasNextInt()) {
+                        System.out.println("Ingrese un número válido");
+                        scanner.nextLine();
+                        continue;
                     }
-                } catch (ProductNotFoundException e) {
-                    System.out.println(e.getMessage());
-                } catch (Exception e) {
-                    System.out.println("Ocurrió un error inesperado: " + e.getMessage());
+
+                    optionCart = scanner.nextInt();
+                    scanner.nextLine();
+
+                    if (optionCart == 0) {
+                        System.out.println("Operacion cancelada.");
+                        break;
+                    }
+
+                    Product selected = productManager.getProductByIndex(optionCart - 1);
+                    if (selected == null) {
+                        System.out.println("Opción fuera de rango");
+                    } else {
+                        userManager.addProductToCart(user.getId(), selected);
+                        System.out.println("✅ Producto agregado al carrito: " + selected.getName());
+                        break;
+                    }
                 }
             }
             case 4 ->
@@ -241,16 +257,14 @@ public class MenuManager {
                 userManager.getProductsToMeCart(user.getId());
             case 5 -> {
                 // Eliminar producto de carrito
-                System.out.println("Que producto desea eliminar del carrito?");
                 userManager.getProductsToMeCart(user.getId());
-                String name = scanner.nextLine();
-                Product product = productManager.productByNameAObject(name);
 
-                if (product != null ){
-                    userManager.deleteProductToCart(user.getId(), product);
-                } else {
-                    throw new ProductNotFoundException("Producto no encontrado");
-                }
+                System.out.print("Ingrese el número del producto que desea eliminar: ");
+                int optionDelete = scanner.nextInt();
+                scanner.nextLine();
+
+                userManager.deleteProductToCart(user.getId(), optionDelete - 1);
+
             }
             case 6 -> {
                 // Vaciar carrito completo
