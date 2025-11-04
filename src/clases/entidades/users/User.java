@@ -3,9 +3,6 @@ package clases.entidades.users;
 import clases.entidades.Cart;
 import clases.entidades.Product;
 import enums.Rol;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public abstract class User {
 
@@ -45,7 +42,7 @@ public abstract class User {
         return id;
     }
 
-     void setId(int id) {
+     public void setId(int id) {
         this.id = id;
     }
 
@@ -85,7 +82,6 @@ public abstract class User {
         return rol;
     }
 
-
     // Manejo de carrito en usuario
     public void addProductToCart(Product p) {
         if (cart == null) {
@@ -108,56 +104,6 @@ public abstract class User {
 
     public void setCart(Cart cart) {
         this.cart = cart;
-    }
-
-    // Mapeador de User a JSON
-    public JSONObject toJson() {
-        JSONObject obj = new JSONObject();
-        try {
-            obj.put("id", id);
-            obj.put("type", rol.toString());
-            obj.put("name", name);
-            obj.put("lastName", lastName);
-            obj.put("email", email);
-            obj.put("password", password);
-
-            if (cart == null) {
-                obj.put("cart", new JSONArray());
-            } else {
-                obj.put("cart", Cart.toJson(cart));
-            }
-
-        } catch (JSONException e) {
-            System.out.println("Error convirtiendo User a JSON");
-        }
-        return obj;
-    }
-
-    // De Json a User
-    public static User fromJson(JSONObject obj) throws JSONException {
-        String type = obj.optString("type", "Customer");
-        if (type.equalsIgnoreCase("Admin")) {
-            Admin admin = new Admin(
-                    obj.getString("name"),
-                    obj.getString("lastName"),
-                    obj.getString("email"),
-                    obj.getString("password")
-            );
-            admin.setId(obj.getInt("id")); // Seteo id fuera de constructor por que no se los paso a las subclses
-            return admin;
-        } else {
-            Customer customer = new Customer(
-                    obj.getString("name"),
-                    obj.getString("lastName"),
-                    obj.getString("email"),
-                    obj.getString("password")
-            );
-            customer.setId(obj.getInt("id"));
-            if (obj.has("cart") && !obj.isNull("cart")) {
-                customer.setCart(Cart.fromJson(obj.getJSONObject("cart")));
-            }
-            return customer;
-        }
     }
 
     @Override
