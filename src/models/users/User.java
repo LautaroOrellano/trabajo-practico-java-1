@@ -91,12 +91,6 @@ public abstract class User {
         cart.addProduct(p, quantity);
     }
 
-    public void removeProductFromCart(CartItem i) {
-        if (cart == null) {
-            cart.removeProduct(i);
-        }
-    }
-
     public void clearCart() {
         cart.clear();
     }

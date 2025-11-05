@@ -5,22 +5,5 @@
     "id": 3,
     "type": "CUSTOMER",
     "email": "lautaro@gmail.com",
-    "cart": {"items": [
-        {
-            "quantity": 1,
-            "price": 89.5,
-            "name": "Mouse Inalámbrico Logitech",
-            "description": "Mouse ergonómico inalámbrico con batería recargable y sensor de alta precisión.",
-            "id": 2,
-            "stock": 7
-        },
-        {
-            "quantity": 1,
-            "price": 699,
-            "name": "GPU NVIDIA RTX 4070",
-            "description": "Tarjeta gráfica con 12GB GDDR6X, soporte DLSS 3 y Ray Tracing.",
-            "id": 10,
-            "stock": 3
-        }
-    ]}
+    "cart": {"items": []}
 }]

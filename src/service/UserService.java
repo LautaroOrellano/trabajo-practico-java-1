@@ -99,7 +99,7 @@ public class UserService implements IUserManager {
 
                     // Si la cantidad a eliminar >= cantidad en el carrito, eliminar todo
                     if (quantity >= item.getQuantity()) {
-                        user.removeProductFromCart(item);
+                        items.remove(i);
                         product.setStock(product.getStock() + item.getQuantity());
                         System.out.println("Se eliminó todo el producto '" + product.getName() + "' del carrito.");
                     } else {

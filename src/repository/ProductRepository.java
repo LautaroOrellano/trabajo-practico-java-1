@@ -69,7 +69,7 @@ public class ProductRepository implements IRepository<Product> {
         System.out.println("---------- PRODUCTOS DISPONIBLES ----------");
         for (int i = 0; i < products.size(); i++) {
             Product p = products.get(i);
-            System.out.println((i + 1) + ". " + p.getName() + " - $" + p.getPrice());
+            System.out.println((i + 1) + ". " + p.getName() + " - $" + p.getPrice() + " - Stock: " + p.getStock());
         }
         System.out.println("-------------------------------------------");
     }

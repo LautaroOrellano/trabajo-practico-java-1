@@ -132,7 +132,8 @@ public class MenuService {
         System.out.println("[5] Eliminar producto del carrito  |");
         System.out.println("[6] Vaciar carrito                 |");
         System.out.println("[7] Realizar compra                |");
-        System.out.println("[8] Ver mi orden                   |");
+        System.out.println("[8] Ver ultima compra              |");
+        System.out.println("[9] Ver todas mis compras          |");
         System.out.println("[0] Salir del programa             |");
         System.out.println("------------------------------------");
     }
@@ -331,11 +332,11 @@ public class MenuService {
                 orderManager.generateOrderFromCart(user);
             }
             case 8 ->
-                    // Ver orden de compra
-                    orderManager.getMeOrder();
+                    // Ver ultima orden de compra
+                    orderManager.getMeOrder(user);
             case 9 ->
                     // Ver todas mis ordenes de compras
-                    orderManager.getAllOrder();
+                    orderManager.getAllOrder(user);
             case 0 ->
                     // Salir del programa
                     System.out.printf("Hasta pronto");

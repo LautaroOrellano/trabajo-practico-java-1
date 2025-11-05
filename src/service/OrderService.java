@@ -1,5 +1,7 @@
 package service;
 
+import enums.Status;
+import exceptions.UserNotFoundException;
 import models.Cart;
 import models.CartItem;
 import models.Order;
@@ -12,6 +14,7 @@ import repository.ProductRepository;
 import repository.UserRepository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class OrderService implements IOrderManager {
@@ -28,7 +31,7 @@ public class OrderService implements IOrderManager {
 
     public void generateOrderFromCart(User user) {
         User repoUser = userRepository.findById(user.getId())
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                .orElseThrow(() -> new UserNotFoundException("Usuario no encontrado"));
 
         Cart cart = repoUser.getCart();
         if (cart == null || cart.getItems().isEmpty()) {
@@ -62,9 +65,60 @@ public class OrderService implements IOrderManager {
         System.out.println("Total a pagar: $" + total);
     }
 
-    public void getAllOrder() {}
+    public void getAllOrder(User user) {
+        User reposUser = userRepository.findById(user.getId())
+                .orElseThrow(()-> new UserNotFoundException("Usuario no encontrado"));
 
-    public void getMeOrder() {}
+        orderRepository.getAll().stream()
+                // Filtra solo las órdenes del usuario actual
+                .filter(o -> o.getCustomerId() == reposUser.getId())
+                // Recorre cada orden y la imprime con formato
+                .forEach(o -> {
+                    System.out.println("---- ORDEN DE COMPRA N° " + o.getNumOrder() + " ----");
+                    System.out.println("Fecha: " + o.getLocalDateTime());
+                    System.out.println("Productos: ");
+
+                    for (CartItem item : o.getProductsList()) {
+                        Product p = item.getProduct();
+                        System.out.printf("  • %-20s x%d  → $%.2f%n",
+                                p.getName(), item.getQuantity(), item.getTotalPrice());
+                    }
+
+                    System.out.printf("Total a pagar: $%.2f%n", o.getTotalPrice());
+                    System.out.println("Estado de compra: " + o.getStatus());
+                    System.out.println("----------------------------------------");
+                });
+    }
+
+    public void getMeOrder(User user) {
+        User reposUser = userRepository.findById(user.getId())
+                .orElseThrow(()-> new UserNotFoundException("Usuario no encontrado"));
+
+        List<Order> orders = orderRepository.getAll();
+
+        if (orders.isEmpty()) {
+            System.out.println("No hay ordenes para mostrar");
+            return;
+        }
+
+        boolean hasOrders = false;
+
+        for (Order o : orders) {
+            if (user.getId() == o.getCustomerId()) {
+                hasOrders = true;
+                System.out.println("---- ORDEN DE COMPRA N° " + o.getNumOrder() + " ----");
+                System.out.println("Fecha: " + o.getLocalDateTime());
+                System.out.println("Productos: " );
+                for (CartItem item : o.getProductsList()) {
+                    Product p = item.getProduct();
+                    System.out.printf("  • %-20s x%d  → $%.2f%n", p.getName(), item.getQuantity(), item.getTotalPrice());
+                }
+                System.out.println("Total a pagar: " + o.getTotalPrice());
+                System.out.println("Estado de compra: " + Status.PAID);
+                System.out.println("----------------------------------------");
+            }
+        }
+    }
 
     public void searchOrder() {}
 
