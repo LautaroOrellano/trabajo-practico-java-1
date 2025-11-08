@@ -3,6 +3,7 @@ package ui.controllers;
 import models.users.Admin;
 import models.users.Customer;
 import models.users.User;
+import repository.ProductRepository;
 import service.AuthService;
 import enums.Rol;
 import javafx.geometry.Insets;
@@ -18,7 +19,8 @@ import ui.MainFX;
 public class LoginController {
 
     private StackPane view = new StackPane();
-    private UserRepository userRepository = new UserRepository();
+    private ProductRepository productRepository = new ProductRepository();
+    private UserRepository userRepository = new UserRepository(productRepository);
     private AuthService authManager = new AuthService(userRepository);
     private MainFX mainApp;
 

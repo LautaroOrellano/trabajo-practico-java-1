@@ -16,11 +16,13 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserRepository implements IRepository<User> {
+    private final ProductRepository productRepository;
     private final List<User> users;
     private final String archivo = "json/users.json";
 
-    public UserRepository() {
+    public UserRepository(ProductRepository productRepository) {
         this.users = new ArrayList<>();
+        this.productRepository = productRepository;
         loadFromJson();
     }
 
@@ -101,7 +103,7 @@ public class UserRepository implements IRepository<User> {
 
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject obj = array.getJSONObject(i);
-                    User u = fromJson(obj);
+                    User u = fromJson(obj, productRepository);
                     users.add(u);
                 }
             }
@@ -142,7 +144,7 @@ public class UserRepository implements IRepository<User> {
     }
 
     // De Json a User
-    public static User fromJson(JSONObject obj) throws JSONException {
+    public static User fromJson(JSONObject obj, ProductRepository productRepository) throws JSONException {
         String type = obj.optString("type", "Customer");
         if (type.equalsIgnoreCase("Admin")) {
             Admin admin = new Admin(
@@ -162,7 +164,7 @@ public class UserRepository implements IRepository<User> {
             );
             customer.setId(obj.getInt("id"));
             if (obj.has("cart") && !obj.isNull("cart")) {
-                customer.setCart(CartJson.fromJson(obj.getJSONObject("cart")));
+                customer.setCart(CartJson.fromJson(obj.getJSONObject("cart"), productRepository));
             }
             return customer;
         }
