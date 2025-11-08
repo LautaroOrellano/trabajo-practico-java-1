@@ -6,8 +6,11 @@ import models.Product;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import repository.ProductRepository;
+import service.ProductService;
 
 public class CartJson {
+
 
     // Mapeo de Carrito a Json
     public static JSONObject toJson(Cart cart) throws JSONException {
@@ -20,10 +23,6 @@ public class CartJson {
                 Product p = item.getProduct();
 
                 itemObj.put("id", p.getId());
-                itemObj.put("name", p.getName());
-                itemObj.put("description", p.getDescription());
-                itemObj.put("price", p.getPrice());
-                itemObj.put("stock", p.getStock());
                 itemObj.put("quantity", item.getQuantity());
                 productsArray.put(itemObj);
             }
@@ -33,21 +32,28 @@ public class CartJson {
     }
 
     // Mapeo de Json a Carrito
-    public static Cart fromJson(JSONObject obj) throws JSONException{
+    public static Cart fromJson(JSONObject obj, ProductRepository productRepository) throws JSONException{
         Cart cart = new Cart();
+
+        if (obj == null || !obj.has("items")) {
+            return cart;
+        }
+
         JSONArray itemsArray = obj.getJSONArray("items");
 
         for (int i = 0; i < itemsArray.length(); i++) {
             JSONObject itemsObj = itemsArray.getJSONObject(i);
-            Product p = new Product(
-                    itemsObj.getString("name"),
-                    itemsObj.getString("description"),
-                    itemsObj.getDouble("price"),
-                    itemsObj.getInt("stock")
-            );
-            p.setId(itemsObj.getInt("id"));
+
+            int id = itemsObj.getInt("id");
             int quantity = itemsObj.getInt("quantity");
-            cart.addProduct(p, quantity);
+
+            Product p = productRepository.findById(id).orElse(null);
+
+            if (p != null) {
+                cart.addProduct(p, quantity);
+            } else {
+                System.out.println("⚠️ Producto con ID " + id + " no encontrado al cargar el carrito.");
+            }
         }
         return cart;
     }

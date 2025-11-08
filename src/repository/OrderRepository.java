@@ -136,10 +136,6 @@ public class OrderRepository implements IRepository<Order> {
                 Product p = item.getProduct();
 
                 itemObj.put("id", p.getId());
-                itemObj.put("name", p.getName());
-                itemObj.put("description", p.getDescription());
-                itemObj.put("price", p.getPrice());
-                itemObj.put("stock", p.getStock());
                 itemObj.put("quantity", item.getQuantity());
 
                 itemsArray.put(itemObj);
@@ -164,15 +160,8 @@ public class OrderRepository implements IRepository<Order> {
         JSONArray itemsArray = json.getJSONArray("productsList");
         for (int i = 0; i < itemsArray.length(); i++) {
             JSONObject itemObj = itemsArray.getJSONObject(i);
-
-            Product p = new Product(
-                    itemObj.getString("name"),
-                    itemObj.getString("description"),
-                    itemObj.getDouble("price"),
-                    itemObj.getInt("stock")
-            );
+            Product p = new Product();
             p.setId(itemObj.getInt("id"));
-
             int quantity = itemObj.getInt("quantity");
             itemsList.add(new CartItem(p, quantity));
         }
