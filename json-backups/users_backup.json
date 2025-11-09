@@ -1,9 +1,86 @@
-[{
-    "lastName": "orellano",
-    "password": "1234",
-    "name": "lautaro",
-    "id": 3,
-    "type": "CUSTOMER",
-    "email": "lautaro@gmail.com",
-    "cart": {"items": []}
-}]
+[
+    {
+        "lastName": "orellano",
+        "password": "1234",
+        "name": "lautaro",
+        "id": 3,
+        "type": "CUSTOMER",
+        "email": "lautaro@gmail.com",
+        "cart": {"items": [{
+            "quantity": 1,
+            "id": 3
+        }]}
+    },
+    {
+        "lastName": "Orellano",
+        "password": "1234",
+        "name": "Lautaro",
+        "id": 4,
+        "type": "ADMIN",
+        "email": "lautaro@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "roldan",
+        "password": "abcd",
+        "name": "fran",
+        "id": 5,
+        "type": "CUSTOMER",
+        "email": "fran@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "Orellano",
+        "password": "1234",
+        "name": "Lautaro",
+        "id": 6,
+        "type": "ADMIN",
+        "email": "lautaro@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "roldan",
+        "password": "abcd",
+        "name": "fran",
+        "id": 7,
+        "type": "CUSTOMER",
+        "email": "fran@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "Orellano",
+        "password": "1234",
+        "name": "Lautaro",
+        "id": 8,
+        "type": "ADMIN",
+        "email": "lautaro@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "roldan",
+        "password": "abcd",
+        "name": "fran",
+        "id": 9,
+        "type": "CUSTOMER",
+        "email": "fran@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "Orellano",
+        "password": "1234",
+        "name": "Lautaro",
+        "id": 10,
+        "type": "ADMIN",
+        "email": "lautaro@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "roldan",
+        "password": "abcd",
+        "name": "fran",
+        "id": 11,
+        "type": "CUSTOMER",
+        "email": "fran@gmail.com",
+        "cart": {"items": []}
+    }
+]

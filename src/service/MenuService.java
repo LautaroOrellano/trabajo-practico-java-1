@@ -113,10 +113,14 @@ public class MenuService {
         System.out.println("[3] Ver todos los productos  |");
         System.out.println("[4] Modificar producto       |");
         System.out.println("[5] Eliminar un producto     |");
-        System.out.println("[6] Ver ventas               |");
-        System.out.println("[7] Buscar venta             |");
-        System.out.println("[8] Ver usuarios             |");
-        System.out.println("[9] Buscar usuarios          |");
+        System.out.println("[6] Ver ordenes              |");
+        System.out.println("[7] Buscar orden por id      |");
+        System.out.println("[8] Eliminar una orden       |");
+        System.out.println("[9] Crear un usuario         |");
+        System.out.println("[10] Buscar usuario por id    |");
+        System.out.println("[11] Ver todo los usuarios    |");
+        System.out.println("[12] Modificar un usuario     |");
+        System.out.println("[13] Eliminar un usuario      |");
         System.out.println("[0] Exit                     |");
         System.out.println("------------------------------");
     }
@@ -202,6 +206,9 @@ public class MenuService {
             case 8 -> orderManager.removeOrder();
             case 9 -> userManager.getAllUsers();
             case 10 -> userManager.searchUserById(1);
+            case 11 -> userManager.searchUserById(1);
+            case 12 -> userManager.searchUserById(1);
+            case 13 -> userManager.searchUserById(1);
             case 0 -> System.out.printf("Hasta pronto");
             default -> System.out.println("Opcion incorrecta.");
         }
@@ -333,7 +340,7 @@ public class MenuService {
 
                     if (qtyInput.equalsIgnoreCase("exit")) {
                         System.out.println("Operación cancelada.");
-                        return; // o break si querés seguir dentro del menú
+                        return;
                     }
 
                     try {
