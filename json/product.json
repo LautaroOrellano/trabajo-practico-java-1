@@ -4,7 +4,7 @@
         "name": "Teclado Mecánico RGB",
         "description": "Teclado mecánico con switches rojos y retroiluminación RGB personalizable.",
         "id": 1,
-        "stock": 2
+        "stock": 0
     },
     {
         "price": 89.5,
@@ -18,7 +18,7 @@
         "name": "Auriculares HyperX Cloud II",
         "description": "Auriculares con sonido envolvente 7.1 y micrófono desmontable.",
         "id": 3,
-        "stock": 5
+        "stock": 2
     },
     {
         "price": 235.75,
@@ -32,7 +32,7 @@
         "name": "Silla Gamer Reclinable",
         "description": "Silla ergonómica con apoyabrazos ajustables y respaldo reclinable hasta 180°.",
         "id": 5,
-        "stock": 1
+        "stock": 0
     },
     {
         "price": 29.99,

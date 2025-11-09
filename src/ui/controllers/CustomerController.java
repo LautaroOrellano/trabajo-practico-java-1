@@ -1,10 +1,10 @@
 package ui.controllers;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import models.CartItem;
 import models.Order;
@@ -35,59 +35,102 @@ public class CustomerController {
         this.productService = productService;
         this.orderService = orderService;
 
-        VBox layout = new VBox(10);
-        layout.setPadding(new Insets(20));
+        // --- CONTENEDOR PRINCIPAL ---
+        BorderPane pageLayout = new BorderPane();
+        pageLayout.setStyle("-fx-background-color: linear-gradient(to bottom, #e0f7fa, #ffffff);");
+
+        // --- HEADER ARRIBA ---
+        HBox header = new HBox();
+        header.setPadding(new Insets(15));
+        header.setStyle("-fx-background-color: #0288d1;");
+        header.setAlignment(Pos.CENTER_LEFT);
 
         Label lblWelcome = new Label("Bienvenido: " + currentUser.getName());
+        lblWelcome.setStyle("-fx-text-fill: white; -fx-font-size: 16; -fx-font-weight: bold;");
+        header.getChildren().add(lblWelcome);
+        pageLayout.setTop(header);
 
-        // --- BOTONES DE MENU ---
+        // --- CONTENIDO CENTRAL ---
+        StackPane contentPane = new StackPane();
+        contentPane.setPadding(new Insets(20));
+        Label placeholder = new Label("Aquí se mostrará el contenido de cada sección");
+        placeholder.setStyle("-fx-font-size: 14; -fx-text-fill: #333;");
+        contentPane.getChildren().add(placeholder);
+        pageLayout.setCenter(contentPane);
+
+        // --- MENÚ HAMBURGUESA FLOTANTE ---
+        VBox menuContent = new VBox(8);
+        menuContent.setPadding(new Insets(10));
+        menuContent.setAlignment(Pos.CENTER_RIGHT);
+        menuContent.setStyle("""
+            -fx-background-color: white;
+            -fx-border-color: lightgray;
+            -fx-border-radius: 8;
+            -fx-background-radius: 8;
+            -fx-effect: dropshadow(two-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 0);
+        """);
+        menuContent.setVisible(false); // oculto por defecto
+
         Button btnVerProductos = new Button("Ver Productos");
-        btnVerProductos.setOnAction(e -> showAllProducts());
+        btnVerProductos.setMaxWidth(Double.MAX_VALUE);
+        btnVerProductos.setOnAction(e -> showAllProductsVisual());
 
-        Button btnBuscarProducto = new Button("Buscar Producto por Nombre");
-        btnBuscarProducto.setOnAction(e -> searchProductByName());
+        Button btnVerCarrito = new Button("Ver Carrito");
+        btnVerCarrito.setMaxWidth(Double.MAX_VALUE);
+        btnVerCarrito.setOnAction(e -> showCartVisual());
 
-        Button btnAgregarAlCarrito = new Button("Agregar Producto al Carrito");
-        btnAgregarAlCarrito.setOnAction(e -> addProductToCart());
+        Button btnUltimaCompra = new Button("Última Compra");
+        btnUltimaCompra.setMaxWidth(Double.MAX_VALUE);
+        btnUltimaCompra.setOnAction(e -> showLastOrderVisual());
 
-        Button btnVerCarrito = new Button("Ver Mi Carrito");
-        btnVerCarrito.setOnAction(e -> showCart());
-
-        Button btnEliminarDelCarrito = new Button("Eliminar Producto del Carrito");
-        btnEliminarDelCarrito.setOnAction(e -> removeFromCart());
-
-        Button btnVaciarCarrito = new Button("Vaciar Carrito");
-        btnVaciarCarrito.setOnAction(e -> clearCart());
-
-        Button btnRealizarCompra = new Button("Realizar Compra");
-        btnRealizarCompra.setOnAction(e -> generateOrder());
-
-        Button btnUltimaCompra = new Button("Ver Última Compra");
-        btnUltimaCompra.setOnAction(e -> showLastOrder());
-
-        Button btnTodasCompras = new Button("Ver Todas Mis Compras");
-        btnTodasCompras.setOnAction(e -> showAllOrders());
+        Button btnTodasCompras = new Button("Todas Mis Compras");
+        btnTodasCompras.setMaxWidth(Double.MAX_VALUE);
+        btnTodasCompras.setOnAction(e -> showAllOrdersVisual());
 
         Button btnCerrarSesion = new Button("Cerrar Sesión");
+        btnCerrarSesion.setMaxWidth(Double.MAX_VALUE);
         btnCerrarSesion.setOnAction(e -> mainApp.setScreen(mainApp.getLoginController().getView()));
 
-        layout.getChildren().addAll(lblWelcome,
-                btnVerProductos, btnBuscarProducto, btnAgregarAlCarrito,
-                btnVerCarrito, btnEliminarDelCarrito, btnVaciarCarrito,
-                btnRealizarCompra, btnUltimaCompra, btnTodasCompras,
-                btnCerrarSesion
+        menuContent.getChildren().addAll(
+                btnVerProductos, btnVerCarrito, btnUltimaCompra, btnTodasCompras, btnCerrarSesion
         );
 
-        view.getChildren().add(layout);
+        // --- BOTÓN HAMBURGUESA ---
+        Button btnMenu = new Button("☰");
+        btnMenu.setStyle("""
+            -fx-background-color: #0288d1;
+            -fx-text-fill: white;
+            -fx-font-size: 18;
+            -fx-font-weight: bold;
+            -fx-background-radius: 50%;
+            -fx-min-width: 45px;
+            -fx-min-height: 45px;
+        """);
+
+        btnMenu.setOnAction(e -> {
+            menuContent.setVisible(!menuContent.isVisible());
+        });
+
+        // --- CONTENEDOR FLOTANTE ---
+        VBox floatingBox = new VBox(10, menuContent, btnMenu);
+        floatingBox.setAlignment(Pos.BOTTOM_RIGHT);
+        floatingBox.setPadding(new Insets(0, 20, 20, 0));
+
+        StackPane.setAlignment(floatingBox, Pos.BOTTOM_RIGHT);
+
+        // --- STACK PRINCIPAL ---
+        StackPane mainStack = new StackPane(pageLayout, floatingBox);
+
+        view.getChildren().add(mainStack);
     }
 
     public StackPane getView() {
         return view;
     }
 
-    // ----------------- MÉTODOS DE ACCIÓN -----------------
+    // ----------------- MÉTODOS VISUALES -----------------
 
-    private void showAllProducts() {
+    private void showAllProductsVisual() {
         List<Product> products = productService.getProductsFX();
         if (products.isEmpty()) {
             showAlert("No hay productos disponibles");
@@ -95,92 +138,55 @@ public class CustomerController {
         }
 
         Stage stage = new Stage();
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setFitToWidth(true);
+
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(10));
 
         for (Product p : products) {
-            Label lbl = new Label("ID: " + p.getId() + " | " + p.getName() +
-                    " | Precio: $" + p.getPrice() +
-                    " | Stock: " + p.getStock());
-            layout.getChildren().add(lbl);
+            VBox card = new VBox(5);
+            card.setPadding(new Insets(10));
+            card.setStyle("-fx-border-color: gray; -fx-border-radius: 5; -fx-background-color: #f5f5f5;");
+
+            Label lblName = new Label(p.getName());
+            lblName.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
+            Label lblPrice = new Label("Precio: $" + String.format("%.2f", p.getPrice()));
+            Label lblStock = new Label("Stock: " + p.getStock());
+
+            TextField txtQty = new TextField();
+            txtQty.setPromptText("Cantidad");
+            txtQty.setMaxWidth(60);
+
+            Button btnAgregar = new Button("Agregar al carrito");
+            btnAgregar.setOnAction(e -> {
+                try {
+                    int qty = Integer.parseInt(txtQty.getText());
+                    if (qty <= 0 || qty > p.getStock()) {
+                        showAlert("Cantidad inválida. Stock disponible: " + p.getStock());
+                        return;
+                    }
+                    userService.addProductToCart(currentUser.getId(), p, qty);
+                    showAlert("Producto agregado al carrito: " + p.getName() + " x" + qty);
+                } catch (NumberFormatException ex) {
+                    showAlert("Ingrese un número válido");
+                } catch (Exception ex) {
+                    showAlert("Error: " + ex.getMessage());
+                }
+            });
+
+            card.getChildren().addAll(lblName, lblPrice, lblStock, txtQty, btnAgregar);
+            layout.getChildren().add(card);
         }
 
-        Scene scene = new Scene(layout, 400, 300);
+        scrollPane.setContent(layout);
+        Scene scene = new Scene(scrollPane, 400, 500);
         stage.setScene(scene);
-        stage.setTitle("Lista de Productos");
+        stage.setTitle("Productos");
         stage.show();
     }
 
-    private void searchProductByName() {
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setHeaderText("Ingrese el nombre del producto:");
-        dialog.showAndWait().ifPresent(name -> {
-            Product p = productService.searchProductByNameFX(name);
-            if (p == null) {
-                showAlert("Producto no encontrado");
-            } else {
-                showAlert("Producto encontrado:\nID: " + p.getId() +
-                        "\nNombre: " + p.getName() +
-                        "\nPrecio: $" + p.getPrice() +
-                        "\nStock: " + p.getStock());
-            }
-        });
-    }
-
-    private void addProductToCart() {
-        List<Product> products = productService.getProductsFX();
-        if (products.isEmpty()) {
-            showAlert("No hay productos disponibles");
-            return;
-        }
-
-        Stage stage = new Stage();
-        VBox layout = new VBox(10);
-        layout.setPadding(new Insets(10));
-
-        Label lbl = new Label("Seleccione ID del producto y cantidad:");
-        layout.getChildren().add(lbl);
-
-        TextField txtId = new TextField();
-        txtId.setPromptText("ID producto");
-        TextField txtQty = new TextField();
-        txtQty.setPromptText("Cantidad");
-
-        Button btnAdd = new Button("Agregar");
-        btnAdd.setOnAction(e -> {
-            try {
-                int id = Integer.parseInt(txtId.getText());
-                int qty = Integer.parseInt(txtQty.getText());
-
-                Product p = productService.searchProductFX(id);
-                if (p == null) {
-                    showAlert("Producto no encontrado");
-                    return;
-                }
-                if (qty <= 0 || qty > p.getStock()) {
-                    showAlert("Cantidad inválida. Stock disponible: " + p.getStock());
-                    return;
-                }
-
-                userService.addProductToCart(currentUser.getId(), p, qty);
-                showAlert("Producto agregado al carrito: " + p.getName() + " x" + qty);
-                stage.close();
-            } catch (NumberFormatException ex) {
-                showAlert("Ingrese números válidos");
-            } catch (Exception ex) {
-                showAlert("Error: " + ex.getMessage());
-            }
-        });
-
-        layout.getChildren().addAll(txtId, txtQty, btnAdd);
-
-        Scene scene = new Scene(layout, 300, 200);
-        stage.setScene(scene);
-        stage.setTitle("Agregar al Carrito");
-        stage.show();
-    }
-
-    private void showCart() {
+    private void showCartVisual() {
         List<CartItem> cart = userService.getCartListFX(currentUser.getId());
         if (cart.isEmpty()) {
             showAlert("El carrito está vacío");
@@ -188,86 +194,64 @@ public class CustomerController {
         }
 
         Stage stage = new Stage();
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setFitToWidth(true);
+
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(10));
 
         double total = 0;
-        for (CartItem item : cart) {
-            Label lbl = new Label(item.getProduct().getName() +
-                    " x" + item.getQuantity() +
-                    " → Subtotal: $" + item.getTotalPrice());
-            layout.getChildren().add(lbl);
+        for (int i = 0; i < cart.size(); i++) {
+            CartItem item = cart.get(i);
+
+            VBox card = new VBox(5);
+            card.setPadding(new Insets(10));
+            card.setStyle("-fx-border-color: gray; -fx-border-radius: 5; -fx-background-color: #e0f7fa;");
+
+            Label lblName = new Label(item.getProduct().getName());
+            lblName.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
+            Label lblQty = new Label("Cantidad: " + item.getQuantity());
+            Label lblSubtotal = new Label("Subtotal: $" + String.format("%.2f", item.getTotalPrice()));
+
+            Button btnEliminar = new Button("Eliminar");
+            int index = i;
+            btnEliminar.setOnAction(e -> {
+                userService.deleteProductToCart(currentUser.getId(), index, item.getQuantity());
+                stage.close();
+                showCartVisual();
+            });
+
+            card.getChildren().addAll(lblName, lblQty, lblSubtotal, btnEliminar);
+            layout.getChildren().add(card);
+
             total += item.getTotalPrice();
         }
-        Label lblTotal = new Label("Total carrito: $" + total);
-        layout.getChildren().add(lblTotal);
 
-        Scene scene = new Scene(layout, 400, 300);
+        Label lblTotal = new Label("Total carrito: $" + String.format("%.2f", total));
+        lblTotal.setStyle("-fx-font-weight: bold; -fx-font-size: 16;");
+
+        Button btnGenerarOrden = new Button("Generar Orden");
+        btnGenerarOrden.setStyle("-fx-background-color: #4caf50; -fx-text-fill: white;");
+        btnGenerarOrden.setOnAction(e -> {
+            try {
+                orderService.generateOrderFromCart(currentUser);
+                showAlert("Orden generada correctamente");
+                stage.close();
+            } catch (Exception ex) {
+                showAlert("Error al generar orden: " + ex.getMessage());
+            }
+        });
+
+        layout.getChildren().addAll(lblTotal, btnGenerarOrden);
+
+        scrollPane.setContent(layout);
+        Scene scene = new Scene(scrollPane, 400, 400);
         stage.setScene(scene);
         stage.setTitle("Mi Carrito");
         stage.show();
     }
 
-    private void removeFromCart() {
-        List<CartItem> cart = userService.getCartListFX(currentUser.getId());
-        if (cart.isEmpty()) {
-            showAlert("El carrito está vacío");
-            return;
-        }
-
-        Stage stage = new Stage();
-        VBox layout = new VBox(10);
-        layout.setPadding(new Insets(10));
-
-        Label lbl = new Label("Ingrese índice del producto a eliminar:");
-        layout.getChildren().add(lbl);
-
-        TextField txtIndex = new TextField();
-        txtIndex.setPromptText("Número del producto");
-        TextField txtQty = new TextField();
-        txtQty.setPromptText("Cantidad a eliminar");
-
-        Button btnDel = new Button("Eliminar");
-        btnDel.setOnAction(e -> {
-            try {
-                int index = Integer.parseInt(txtIndex.getText()) - 1;
-                int qty = Integer.parseInt(txtQty.getText());
-
-                if (index < 0 || index >= cart.size()) {
-                    showAlert("Índice fuera de rango");
-                    return;
-                }
-                userService.deleteProductToCart(currentUser.getId(), index, qty);
-                showAlert("Producto eliminado correctamente");
-                stage.close();
-            } catch (NumberFormatException ex) {
-                showAlert("Ingrese números válidos");
-            }
-        });
-
-        layout.getChildren().addAll(txtIndex, txtQty, btnDel);
-
-        Scene scene = new Scene(layout, 300, 200);
-        stage.setScene(scene);
-        stage.setTitle("Eliminar del Carrito");
-        stage.show();
-    }
-
-    private void clearCart() {
-        userService.clearMeCart(currentUser.getId());
-        showAlert("Carrito vaciado correctamente");
-    }
-
-    private void generateOrder() {
-        try {
-            orderService.generateOrderFromCart(currentUser);
-            showAlert("Orden generada correctamente");
-        } catch (Exception e) {
-            showAlert("Error al generar orden: " + e.getMessage());
-        }
-    }
-
-    private void showLastOrder() {
+    private void showLastOrderVisual() {
         Order order = orderService.getLastOrderFX(currentUser);
         if (order == null) {
             showAlert("No hay órdenes para mostrar");
@@ -275,24 +259,38 @@ public class CustomerController {
         }
 
         Stage stage = new Stage();
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setFitToWidth(true);
+
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(10));
 
         for (CartItem item : order.getProductsList()) {
-            Label lbl = new Label(item.getProduct().getName() + " x" + item.getQuantity() +
-                    " → $" + item.getTotalPrice());
-            layout.getChildren().add(lbl);
+            VBox card = new VBox(5);
+            card.setPadding(new Insets(10));
+            card.setStyle("-fx-border-color: gray; -fx-border-radius: 5; -fx-background-color: #fff9c4;");
+
+            Label lblName = new Label(item.getProduct().getName());
+            lblName.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
+            Label lblQty = new Label("Cantidad: " + item.getQuantity());
+            Label lblSubtotal = new Label("Subtotal: $" + String.format("%.2f", item.getTotalPrice()));
+
+            card.getChildren().addAll(lblName, lblQty, lblSubtotal);
+            layout.getChildren().add(card);
         }
-        Label lblTotal = new Label("Total: $" + order.getTotalPrice());
+
+        Label lblTotal = new Label("Total orden: $" + String.format("%.2f", order.getTotalPrice()));
+        lblTotal.setStyle("-fx-font-weight: bold; -fx-font-size: 16;");
         layout.getChildren().add(lblTotal);
 
-        Scene scene = new Scene(layout, 400, 300);
+        scrollPane.setContent(layout);
+        Scene scene = new Scene(scrollPane, 400, 400);
         stage.setScene(scene);
         stage.setTitle("Última Orden");
         stage.show();
     }
 
-    private void showAllOrders() {
+    private void showAllOrdersVisual() {
         List<Order> orders = orderService.getAllOrdersFX(currentUser);
         if (orders.isEmpty()) {
             showAlert("No hay órdenes para mostrar");
@@ -300,21 +298,32 @@ public class CustomerController {
         }
 
         Stage stage = new Stage();
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setFitToWidth(true);
+
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(10));
 
         for (Order order : orders) {
-            Label lblHeader = new Label("Orden #" + order.getNumOrder() + " - Total: $" + order.getTotalPrice());
-            layout.getChildren().add(lblHeader);
+            VBox card = new VBox(5);
+            card.setPadding(new Insets(10));
+            card.setStyle("-fx-border-color: gray; -fx-border-radius: 5; -fx-background-color: #c8e6c9;");
+
+            Label lblHeader = new Label("Orden #" + order.getNumOrder() + " - Total: $" + String.format("%.2f", order.getTotalPrice()));
+            lblHeader.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
+            card.getChildren().add(lblHeader);
+
             for (CartItem item : order.getProductsList()) {
                 Label lblItem = new Label(item.getProduct().getName() + " x" + item.getQuantity() +
-                        " → $" + item.getTotalPrice());
-                layout.getChildren().add(lblItem);
+                        " → $" + String.format("%.2f", item.getTotalPrice()));
+                card.getChildren().add(lblItem);
             }
-            layout.getChildren().add(new Separator());
+
+            layout.getChildren().add(card);
         }
 
-        Scene scene = new Scene(layout, 400, 400);
+        scrollPane.setContent(layout);
+        Scene scene = new Scene(scrollPane, 450, 500);
         stage.setScene(scene);
         stage.setTitle("Todas las Órdenes");
         stage.show();

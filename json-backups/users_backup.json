@@ -133,5 +133,293 @@
         "type": "CUSTOMER",
         "email": "fran@gmail.com",
         "cart": {"items": []}
+    },
+    {
+        "lastName": "Orellano",
+        "password": "1234",
+        "name": "Lautaro",
+        "id": 18,
+        "type": "ADMIN",
+        "email": "lautaro@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "roldan",
+        "password": "abcd",
+        "name": "fran",
+        "id": 19,
+        "type": "CUSTOMER",
+        "email": "fran@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "Orellano",
+        "password": "1234",
+        "name": "Lautaro",
+        "id": 20,
+        "type": "ADMIN",
+        "email": "lautaro@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "roldan",
+        "password": "abcd",
+        "name": "fran",
+        "id": 21,
+        "type": "CUSTOMER",
+        "email": "fran@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "Orellano",
+        "password": "1234",
+        "name": "Lautaro",
+        "id": 22,
+        "type": "ADMIN",
+        "email": "lautaro@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "roldan",
+        "password": "abcd",
+        "name": "fran",
+        "id": 23,
+        "type": "CUSTOMER",
+        "email": "fran@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "Orellano",
+        "password": "1234",
+        "name": "Lautaro",
+        "id": 24,
+        "type": "ADMIN",
+        "email": "lautaro@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "roldan",
+        "password": "abcd",
+        "name": "fran",
+        "id": 25,
+        "type": "CUSTOMER",
+        "email": "fran@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "Orellano",
+        "password": "1234",
+        "name": "Lautaro",
+        "id": 26,
+        "type": "ADMIN",
+        "email": "lautaro@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "roldan",
+        "password": "abcd",
+        "name": "fran",
+        "id": 27,
+        "type": "CUSTOMER",
+        "email": "fran@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "Orellano",
+        "password": "1234",
+        "name": "Lautaro",
+        "id": 28,
+        "type": "ADMIN",
+        "email": "lautaro@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "roldan",
+        "password": "abcd",
+        "name": "fran",
+        "id": 29,
+        "type": "CUSTOMER",
+        "email": "fran@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "Orellano",
+        "password": "1234",
+        "name": "Lautaro",
+        "id": 30,
+        "type": "ADMIN",
+        "email": "lautaro@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "roldan",
+        "password": "abcd",
+        "name": "fran",
+        "id": 31,
+        "type": "CUSTOMER",
+        "email": "fran@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "Orellano",
+        "password": "1234",
+        "name": "Lautaro",
+        "id": 32,
+        "type": "ADMIN",
+        "email": "lautaro@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "roldan",
+        "password": "abcd",
+        "name": "fran",
+        "id": 33,
+        "type": "CUSTOMER",
+        "email": "fran@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "Orellano",
+        "password": "1234",
+        "name": "Lautaro",
+        "id": 34,
+        "type": "ADMIN",
+        "email": "lautaro@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "roldan",
+        "password": "abcd",
+        "name": "fran",
+        "id": 35,
+        "type": "CUSTOMER",
+        "email": "fran@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "Orellano",
+        "password": "1234",
+        "name": "Lautaro",
+        "id": 36,
+        "type": "ADMIN",
+        "email": "lautaro@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "roldan",
+        "password": "abcd",
+        "name": "fran",
+        "id": 37,
+        "type": "CUSTOMER",
+        "email": "fran@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "Orellano",
+        "password": "1234",
+        "name": "Lautaro",
+        "id": 38,
+        "type": "ADMIN",
+        "email": "lautaro@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "roldan",
+        "password": "abcd",
+        "name": "fran",
+        "id": 39,
+        "type": "CUSTOMER",
+        "email": "fran@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "Orellano",
+        "password": "1234",
+        "name": "Lautaro",
+        "id": 40,
+        "type": "ADMIN",
+        "email": "lautaro@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "roldan",
+        "password": "abcd",
+        "name": "fran",
+        "id": 41,
+        "type": "CUSTOMER",
+        "email": "fran@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "Orellano",
+        "password": "1234",
+        "name": "Lautaro",
+        "id": 42,
+        "type": "ADMIN",
+        "email": "lautaro@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "roldan",
+        "password": "abcd",
+        "name": "fran",
+        "id": 43,
+        "type": "CUSTOMER",
+        "email": "fran@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "Orellano",
+        "password": "1234",
+        "name": "Lautaro",
+        "id": 44,
+        "type": "ADMIN",
+        "email": "lautaro@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "roldan",
+        "password": "abcd",
+        "name": "fran",
+        "id": 45,
+        "type": "CUSTOMER",
+        "email": "fran@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "Orellano",
+        "password": "1234",
+        "name": "Lautaro",
+        "id": 46,
+        "type": "ADMIN",
+        "email": "lautaro@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "roldan",
+        "password": "abcd",
+        "name": "fran",
+        "id": 47,
+        "type": "CUSTOMER",
+        "email": "fran@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "Orellano",
+        "password": "1234",
+        "name": "Lautaro",
+        "id": 48,
+        "type": "ADMIN",
+        "email": "lautaro@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "roldan",
+        "password": "abcd",
+        "name": "fran",
+        "id": 49,
+        "type": "CUSTOMER",
+        "email": "fran@gmail.com",
+        "cart": {"items": []}
     }
 ]

@@ -22,7 +22,7 @@ public class MainFX extends Application {
 
         Scene scene = new Scene(root, 600, 400);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("E-commerce KeyLab");
+        primaryStage.setTitle("E-commerce UTN");
         primaryStage.show();
     }
 
