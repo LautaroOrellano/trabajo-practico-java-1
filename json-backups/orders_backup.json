@@ -1,12 +1,18 @@
 [{
-    "localDateTime": "2025-11-08T16:24:18.728256700",
-    "numOrder": "#000001",
-    "productsList": [{
-        "quantity": 4,
-        "id": 2
-    }],
-    "totalPrice": 358,
+    "localDateTime": "2025-11-09T01:06:15.952140600",
+    "numOrder": "#000002",
+    "productsList": [
+        {
+            "quantity": 4,
+            "id": 6
+        },
+        {
+            "quantity": 2,
+            "id": 7
+        }
+    ],
+    "totalPrice": 478.94,
     "customerId": 3,
-    "id": 1,
+    "id": 2,
     "status": "PENDING"
 }]

@@ -4,7 +4,7 @@
         "name": "Teclado Mecánico RGB",
         "description": "Teclado mecánico con switches rojos y retroiluminación RGB personalizable.",
         "id": 1,
-        "stock": 3
+        "stock": 2
     },
     {
         "price": 89.5,
@@ -39,14 +39,14 @@
         "name": "Alfombrilla XXL",
         "description": "Mousepad extendido antideslizante con bordes reforzados y base de goma.",
         "id": 6,
-        "stock": 18
+        "stock": 7
     },
     {
         "price": 179.49,
         "name": "Micrófono USB Blue Yeti",
         "description": "Micrófono profesional USB con patrones polares ajustables y control de ganancia.",
         "id": 7,
-        "stock": 7
+        "stock": 3
     },
     {
         "price": 99.99,
