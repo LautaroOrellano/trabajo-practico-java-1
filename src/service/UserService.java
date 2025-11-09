@@ -64,15 +64,27 @@ public class UserService implements IUserManager {
 
                     List<CartItem> items = cart.getItems();
                     System.out.println("---------- PRODUCTOS EN CARRITO ----------");
+                    double totalCarrito = 0.0;
+
                     for (int i = 0; i < items.size(); i++) {
                         CartItem item = items.get(i);
+
+                        Double precioUnitarioObj = item.getProduct().getPrice();
+                        double precioUnitario = precioUnitarioObj != null ? precioUnitarioObj : 0.0;
+
+                        Double subtotalObj = item.getTotalPrice();
+                        double subtotal = subtotalObj != null ? subtotalObj : 0.0;
+
+                        totalCarrito += subtotal;
+
                         System.out.println((i + 1) + ". " + item.getProduct().getName() +
-                                          " | Cantidad: " + item.getQuantity() +
-                                          " | Precio unitario: " + item.getProduct().getPrice() +
-                                          " | Subtotal: " + item.getTotalPrice());
+                                " | Cantidad: " + item.getQuantity() +
+                                " | Precio unitario: $" + String.format("%.2f", precioUnitario) +
+                                " | Subtotal: $" + String.format("%.2f", subtotal));
                     }
-                    System.out.println("-------------------------------------------");
-                    System.out.println("Total carrito: " + cart.getTotalPrice());
+
+                            System.out.println("-------------------------------------------");
+                            System.out.println("Total carrito: $" + String.format("%.2f", totalCarrito));
                 },
                     ()-> {
                         System.out.println("Carrito no encontrado");
@@ -126,6 +138,18 @@ public class UserService implements IUserManager {
                 );
     }
 
+    // ----------------- MÉTODOS FX -----------------
+
+    // Devuelve lista de items del carrito del usuario
+    public List<CartItem> getCartListFX(int userId) {
+        return userRepository.findById(userId)
+                .map(user -> {
+                    Cart cart = user.getCart();
+                    if (cart != null) return cart.getItems();
+                    else return List.<CartItem>of();
+                })
+                .orElse(List.of());
+    }
 
 }
 

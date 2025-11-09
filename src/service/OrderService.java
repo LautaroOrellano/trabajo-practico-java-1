@@ -62,7 +62,7 @@ public class OrderService implements IOrderManager {
 
         System.out.println("✅ Orden creada correctamente.");
         System.out.println("Número de orden: " + order.getNumOrder());
-        System.out.println("Total a pagar: $" + total);
+        System.out.println("Total a pagar: $" + String.format("%.2f", total));
     }
 
     public void getAllOrder(User user) {
@@ -123,4 +123,21 @@ public class OrderService implements IOrderManager {
     public void searchOrder() {}
 
     public void removeOrder() {}
+
+    // ----------------- MÉTODOS FX -----------------
+
+    // Devuelve todas las órdenes del usuario
+    public List<Order> getAllOrdersFX(User user) {
+        return orderRepository.getAll().stream()
+                .filter(o -> o.getCustomerId() == user.getId())
+                .toList();
+    }
+
+    // Devuelve la última orden del usuario
+    public Order getLastOrderFX(User user) {
+        return orderRepository.getAll().stream()
+                .filter(o -> o.getCustomerId() == user.getId())
+                .reduce((first, second) -> second) // devuelve el último
+                .orElse(null);
+    }
 }

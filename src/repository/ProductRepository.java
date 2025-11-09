@@ -36,10 +36,11 @@ public class ProductRepository implements IRepository<Product> {
     }
 
     @Override
-    public Optional<Product> findByName(String name) {
+    public Optional<Product> findByName(String keyword) {
+        String lowerKeyword = keyword.toLowerCase();
         return products.stream()
-                       .filter(p -> p.getName().equals(name))
-                       .findFirst();
+                .filter(p -> p.getName() != null && p.getName().toLowerCase().contains(lowerKeyword))
+                .findFirst();
     }
 
     @Override

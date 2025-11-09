@@ -1,73 +1,81 @@
 package ui.controllers;
 
-import models.Product;
-import models.users.User;
-import service.MenuService;
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import models.CartItem;
+import models.Order;
+import models.Product;
+import models.users.User;
+import service.OrderService;
+import service.ProductService;
+import service.UserService;
 import ui.MainFX;
+
+import java.util.List;
 
 public class CustomerController {
 
     private StackPane view = new StackPane();
-    private MenuService menuManager = new MenuService();
+    private UserService userService;
+    private ProductService productService;
+    private OrderService orderService;
     private User currentUser;
 
-    public CustomerController(MainFX mainApp, User user) {
+    public CustomerController(MainFX mainApp, User user,
+                              UserService userService,
+                              ProductService productService,
+                              OrderService orderService) {
+
         this.currentUser = user;
+        this.userService = userService;
+        this.productService = productService;
+        this.orderService = orderService;
 
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(20));
 
         Label lblWelcome = new Label("Bienvenido: " + currentUser.getName());
-        lblWelcome.setStyle("-fx-font-weight: bold; -fx-font-size: 16px;");
 
-        // --- BOTONES DEL MENÚ ---
-        Button btn1 = new Button("[1] Ver lista de productos");
-        btn1.setMaxWidth(Double.MAX_VALUE);
-        btn1.setOnAction(e -> menuManager.getProductManager().getAllProductsCustom());
+        // --- BOTONES DE MENU ---
+        Button btnVerProductos = new Button("Ver Productos");
+        btnVerProductos.setOnAction(e -> showAllProducts());
 
-        Button btn2 = new Button("[2] Buscar producto");
-        btn2.setMaxWidth(Double.MAX_VALUE);
-        btn2.setOnAction(e -> buscarProducto());
+        Button btnBuscarProducto = new Button("Buscar Producto por Nombre");
+        btnBuscarProducto.setOnAction(e -> searchProductByName());
 
-        Button btn3 = new Button("[3] Agregar producto al carrito");
-        btn3.setMaxWidth(Double.MAX_VALUE);
-        btn3.setOnAction(e -> agregarAlCarrito());
+        Button btnAgregarAlCarrito = new Button("Agregar Producto al Carrito");
+        btnAgregarAlCarrito.setOnAction(e -> addProductToCart());
 
-        Button btn4 = new Button("[4] Ver mi carrito");
-        btn4.setMaxWidth(Double.MAX_VALUE);
-        btn4.setOnAction(e -> menuManager.getUserManager().getProductsToMeCart(currentUser.getId()));
+        Button btnVerCarrito = new Button("Ver Mi Carrito");
+        btnVerCarrito.setOnAction(e -> showCart());
 
-        Button btn5 = new Button("[5] Eliminar producto del carrito");
-        btn5.setMaxWidth(Double.MAX_VALUE);
-        btn5.setOnAction(e -> eliminarDelCarrito());
+        Button btnEliminarDelCarrito = new Button("Eliminar Producto del Carrito");
+        btnEliminarDelCarrito.setOnAction(e -> removeFromCart());
 
-        Button btn6 = new Button("[6] Vaciar carrito");
-        btn6.setMaxWidth(Double.MAX_VALUE);
-        btn6.setOnAction(e -> menuManager.getUserManager().clearMeCart(currentUser.getId()));
+        Button btnVaciarCarrito = new Button("Vaciar Carrito");
+        btnVaciarCarrito.setOnAction(e -> clearCart());
 
-        Button btn7 = new Button("[7] Realizar compra");
-        btn7.setMaxWidth(Double.MAX_VALUE);
-        btn7.setOnAction(e -> menuManager.getOrderManager().generateOrderFromCart(currentUser));
+        Button btnRealizarCompra = new Button("Realizar Compra");
+        btnRealizarCompra.setOnAction(e -> generateOrder());
 
-        Button btn8 = new Button("[8] Ver ultima compra");
-        btn8.setMaxWidth(Double.MAX_VALUE);
-        btn8.setOnAction(e -> menuManager.getOrderManager().getMeOrder(currentUser));
+        Button btnUltimaCompra = new Button("Ver Última Compra");
+        btnUltimaCompra.setOnAction(e -> showLastOrder());
 
-        Button btn9 = new Button("[9] Ver todas mis compras");
-        btn9.setMaxWidth(Double.MAX_VALUE);
-        btn9.setOnAction(e -> menuManager.getOrderManager().getAllOrder(currentUser));
+        Button btnTodasCompras = new Button("Ver Todas Mis Compras");
+        btnTodasCompras.setOnAction(e -> showAllOrders());
 
-        Button btn0 = new Button("[0] Salir del programa");
-        btn0.setMaxWidth(Double.MAX_VALUE);
-        btn0.setOnAction(e -> mainApp.setScreen(mainApp.getLoginController().getView()));
+        Button btnCerrarSesion = new Button("Cerrar Sesión");
+        btnCerrarSesion.setOnAction(e -> mainApp.setScreen(mainApp.getLoginController().getView()));
 
-        layout.getChildren().addAll(
-                lblWelcome, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0
+        layout.getChildren().addAll(lblWelcome,
+                btnVerProductos, btnBuscarProducto, btnAgregarAlCarrito,
+                btnVerCarrito, btnEliminarDelCarrito, btnVaciarCarrito,
+                btnRealizarCompra, btnUltimaCompra, btnTodasCompras,
+                btnCerrarSesion
         );
 
         view.getChildren().add(layout);
@@ -77,86 +85,245 @@ public class CustomerController {
         return view;
     }
 
-    // ---------- MÉTODOS AUXILIARES ----------
-    private void buscarProducto() {
+    // ----------------- MÉTODOS DE ACCIÓN -----------------
+
+    private void showAllProducts() {
+        List<Product> products = productService.getProductsFX();
+        if (products.isEmpty()) {
+            showAlert("No hay productos disponibles");
+            return;
+        }
+
+        Stage stage = new Stage();
+        VBox layout = new VBox(10);
+        layout.setPadding(new Insets(10));
+
+        for (Product p : products) {
+            Label lbl = new Label("ID: " + p.getId() + " | " + p.getName() +
+                    " | Precio: $" + p.getPrice() +
+                    " | Stock: " + p.getStock());
+            layout.getChildren().add(lbl);
+        }
+
+        Scene scene = new Scene(layout, 400, 300);
+        stage.setScene(scene);
+        stage.setTitle("Lista de Productos");
+        stage.show();
+    }
+
+    private void searchProductByName() {
         TextInputDialog dialog = new TextInputDialog();
-        dialog.setHeaderText("Ingrese el nombre del producto a buscar:");
+        dialog.setHeaderText("Ingrese el nombre del producto:");
         dialog.showAndWait().ifPresent(name -> {
-            menuManager.getProductManager().searchProductByName(name);
+            Product p = productService.searchProductByNameFX(name);
+            if (p == null) {
+                showAlert("Producto no encontrado");
+            } else {
+                showAlert("Producto encontrado:\nID: " + p.getId() +
+                        "\nNombre: " + p.getName() +
+                        "\nPrecio: $" + p.getPrice() +
+                        "\nStock: " + p.getStock());
+            }
         });
     }
 
-    private void agregarAlCarrito() {
-        // Mostrar lista de productos con opción
-        menuManager.getProductManager().showAllProductsWithOption();
+    private void addProductToCart() {
+        List<Product> products = productService.getProductsFX();
+        if (products.isEmpty()) {
+            showAlert("No hay productos disponibles");
+            return;
+        }
 
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setHeaderText("Ingrese el número del producto a agregar al carrito:");
-        dialog.showAndWait().ifPresent(productIndexStr -> {
+        Stage stage = new Stage();
+        VBox layout = new VBox(10);
+        layout.setPadding(new Insets(10));
+
+        Label lbl = new Label("Seleccione ID del producto y cantidad:");
+        layout.getChildren().add(lbl);
+
+        TextField txtId = new TextField();
+        txtId.setPromptText("ID producto");
+        TextField txtQty = new TextField();
+        txtQty.setPromptText("Cantidad");
+
+        Button btnAdd = new Button("Agregar");
+        btnAdd.setOnAction(e -> {
             try {
-                int index = Integer.parseInt(productIndexStr) - 1;
-                Product selected = menuManager.getProductManager().getProductByIndex(index);
+                int id = Integer.parseInt(txtId.getText());
+                int qty = Integer.parseInt(txtQty.getText());
 
-                if (selected == null) {
-                    mostrarMensaje("Producto inválido.");
+                Product p = productService.searchProductFX(id);
+                if (p == null) {
+                    showAlert("Producto no encontrado");
+                    return;
+                }
+                if (qty <= 0 || qty > p.getStock()) {
+                    showAlert("Cantidad inválida. Stock disponible: " + p.getStock());
                     return;
                 }
 
-                TextInputDialog qtyDialog = new TextInputDialog();
-                qtyDialog.setHeaderText("Ingrese la cantidad a agregar:");
-                qtyDialog.showAndWait().ifPresent(qtyStr -> {
-                    try {
-                        int qty = Integer.parseInt(qtyStr);
-                        if (qty <= 0) {
-                            mostrarMensaje("Cantidad debe ser mayor a cero.");
-                        } else if (qty > selected.getStock()) {
-                            mostrarMensaje("Stock insuficiente. Disponible: " + selected.getStock());
-                        } else {
-                            menuManager.getUserManager().addProductToCart(currentUser.getId(), selected, qty);
-                            mostrarMensaje("✅ Producto agregado: " + selected.getName() + " x" + qty);
-                        }
-                    } catch (NumberFormatException ex) {
-                        mostrarMensaje("Cantidad inválida.");
-                    }
-                });
-
+                userService.addProductToCart(currentUser.getId(), p, qty);
+                showAlert("Producto agregado al carrito: " + p.getName() + " x" + qty);
+                stage.close();
             } catch (NumberFormatException ex) {
-                mostrarMensaje("Opción inválida.");
+                showAlert("Ingrese números válidos");
+            } catch (Exception ex) {
+                showAlert("Error: " + ex.getMessage());
             }
         });
+
+        layout.getChildren().addAll(txtId, txtQty, btnAdd);
+
+        Scene scene = new Scene(layout, 300, 200);
+        stage.setScene(scene);
+        stage.setTitle("Agregar al Carrito");
+        stage.show();
     }
 
-    private void eliminarDelCarrito() {
-        menuManager.getUserManager().getProductsToMeCart(currentUser.getId());
+    private void showCart() {
+        List<CartItem> cart = userService.getCartListFX(currentUser.getId());
+        if (cart.isEmpty()) {
+            showAlert("El carrito está vacío");
+            return;
+        }
 
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setHeaderText("Ingrese el número del producto a eliminar:");
-        dialog.showAndWait().ifPresent(productIndexStr -> {
+        Stage stage = new Stage();
+        VBox layout = new VBox(10);
+        layout.setPadding(new Insets(10));
+
+        double total = 0;
+        for (CartItem item : cart) {
+            Label lbl = new Label(item.getProduct().getName() +
+                    " x" + item.getQuantity() +
+                    " → Subtotal: $" + item.getTotalPrice());
+            layout.getChildren().add(lbl);
+            total += item.getTotalPrice();
+        }
+        Label lblTotal = new Label("Total carrito: $" + total);
+        layout.getChildren().add(lblTotal);
+
+        Scene scene = new Scene(layout, 400, 300);
+        stage.setScene(scene);
+        stage.setTitle("Mi Carrito");
+        stage.show();
+    }
+
+    private void removeFromCart() {
+        List<CartItem> cart = userService.getCartListFX(currentUser.getId());
+        if (cart.isEmpty()) {
+            showAlert("El carrito está vacío");
+            return;
+        }
+
+        Stage stage = new Stage();
+        VBox layout = new VBox(10);
+        layout.setPadding(new Insets(10));
+
+        Label lbl = new Label("Ingrese índice del producto a eliminar:");
+        layout.getChildren().add(lbl);
+
+        TextField txtIndex = new TextField();
+        txtIndex.setPromptText("Número del producto");
+        TextField txtQty = new TextField();
+        txtQty.setPromptText("Cantidad a eliminar");
+
+        Button btnDel = new Button("Eliminar");
+        btnDel.setOnAction(e -> {
             try {
-                int index = Integer.parseInt(productIndexStr) - 1;
+                int index = Integer.parseInt(txtIndex.getText()) - 1;
+                int qty = Integer.parseInt(txtQty.getText());
 
-                TextInputDialog qtyDialog = new TextInputDialog();
-                qtyDialog.setHeaderText("Ingrese la cantidad a eliminar:");
-                qtyDialog.showAndWait().ifPresent(qtyStr -> {
-                    try {
-                        int qty = Integer.parseInt(qtyStr);
-                        menuManager.getUserManager().deleteProductToCart(currentUser.getId(), index, qty);
-                        mostrarMensaje("Producto eliminado correctamente.");
-                    } catch (NumberFormatException ex) {
-                        mostrarMensaje("Cantidad inválida.");
-                    }
-                });
-
+                if (index < 0 || index >= cart.size()) {
+                    showAlert("Índice fuera de rango");
+                    return;
+                }
+                userService.deleteProductToCart(currentUser.getId(), index, qty);
+                showAlert("Producto eliminado correctamente");
+                stage.close();
             } catch (NumberFormatException ex) {
-                mostrarMensaje("Opción inválida.");
+                showAlert("Ingrese números válidos");
             }
         });
+
+        layout.getChildren().addAll(txtIndex, txtQty, btnDel);
+
+        Scene scene = new Scene(layout, 300, 200);
+        stage.setScene(scene);
+        stage.setTitle("Eliminar del Carrito");
+        stage.show();
     }
 
-    private void mostrarMensaje(String msg) {
+    private void clearCart() {
+        userService.clearMeCart(currentUser.getId());
+        showAlert("Carrito vaciado correctamente");
+    }
+
+    private void generateOrder() {
+        try {
+            orderService.generateOrderFromCart(currentUser);
+            showAlert("Orden generada correctamente");
+        } catch (Exception e) {
+            showAlert("Error al generar orden: " + e.getMessage());
+        }
+    }
+
+    private void showLastOrder() {
+        Order order = orderService.getLastOrderFX(currentUser);
+        if (order == null) {
+            showAlert("No hay órdenes para mostrar");
+            return;
+        }
+
+        Stage stage = new Stage();
+        VBox layout = new VBox(10);
+        layout.setPadding(new Insets(10));
+
+        for (CartItem item : order.getProductsList()) {
+            Label lbl = new Label(item.getProduct().getName() + " x" + item.getQuantity() +
+                    " → $" + item.getTotalPrice());
+            layout.getChildren().add(lbl);
+        }
+        Label lblTotal = new Label("Total: $" + order.getTotalPrice());
+        layout.getChildren().add(lblTotal);
+
+        Scene scene = new Scene(layout, 400, 300);
+        stage.setScene(scene);
+        stage.setTitle("Última Orden");
+        stage.show();
+    }
+
+    private void showAllOrders() {
+        List<Order> orders = orderService.getAllOrdersFX(currentUser);
+        if (orders.isEmpty()) {
+            showAlert("No hay órdenes para mostrar");
+            return;
+        }
+
+        Stage stage = new Stage();
+        VBox layout = new VBox(10);
+        layout.setPadding(new Insets(10));
+
+        for (Order order : orders) {
+            Label lblHeader = new Label("Orden #" + order.getNumOrder() + " - Total: $" + order.getTotalPrice());
+            layout.getChildren().add(lblHeader);
+            for (CartItem item : order.getProductsList()) {
+                Label lblItem = new Label(item.getProduct().getName() + " x" + item.getQuantity() +
+                        " → $" + item.getTotalPrice());
+                layout.getChildren().add(lblItem);
+            }
+            layout.getChildren().add(new Separator());
+        }
+
+        Scene scene = new Scene(layout, 400, 400);
+        stage.setScene(scene);
+        stage.setTitle("Todas las Órdenes");
+        stage.show();
+    }
+
+    private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
-        alert.setContentText(msg);
+        alert.setContentText(message);
         alert.showAndWait();
     }
 }

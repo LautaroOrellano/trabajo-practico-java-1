@@ -125,11 +125,23 @@ public class ProductService implements IProducManager {
         System.out.println(removed ? "Producto eliminado con exito." : "Producto no encontrado.");
     }
 
-    // Seccion UX
+    // ----------------- MÉTODOS FX -----------------
+
     @Override
     public Product searchProductFX(int id) {
         return productRepository.findById(id)
                 .orElse(null);
     }
+
+    // Devuelve todos los productos como lista para FX
+    public List<Product> getProductsFX() {
+        return productRepository.getAll();
+    }
+
+    // Buscar producto por nombre, devuelve objeto (null si no existe)
+    public Product searchProductByNameFX(String name) {
+        return productRepository.findByName(name).orElse(null);
+    }
+
 
 }
