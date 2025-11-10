@@ -12,12 +12,14 @@ import interfaces.IOrderManager;
 import repository.OrderRepository;
 import repository.ProductRepository;
 import repository.UserRepository;
+import java.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class OrderService implements IOrderManager {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
@@ -75,7 +77,7 @@ public class OrderService implements IOrderManager {
                 // Recorre cada orden y la imprime con formato
                 .forEach(o -> {
                     System.out.println("---- ORDEN DE COMPRA N° " + o.getNumOrder() + " ----");
-                    System.out.println("Fecha: " + o.getLocalDateTime());
+                    System.out.println("Fecha: " + o.getLocalDateTime().format(formatter));
                     System.out.println("Productos: ");
 
                     for (CartItem item : o.getProductsList()) {
@@ -107,7 +109,7 @@ public class OrderService implements IOrderManager {
             if (user.getId() == o.getCustomerId()) {
                 hasOrders = true;
                 System.out.println("---- ORDEN DE COMPRA N° " + o.getNumOrder() + " ----");
-                System.out.println("Fecha: " + o.getLocalDateTime());
+                System.out.println("Fecha: " + o.getLocalDateTime().format(formatter));
                 System.out.println("Productos: " );
                 for (CartItem item : o.getProductsList()) {
                     Product p = item.getProduct();
