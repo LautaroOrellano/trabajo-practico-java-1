@@ -40,10 +40,6 @@ public class LoginController {
         this.productService = new ProductService(productRepository);
         this.orderService = new OrderService(orderRepository, userRepository, productRepository);
 
-        authManager.register(new Admin("Lautaro", "Orellano", "lautaro@gmail.com", "1234"));
-        authManager.register(new Customer("fran", "roldan", "fran@gmail.com", "abcd",
-                12345678L, 123456789L, "Calle Falsa 123", 25));
-
         TextField emailField = new TextField();
         PasswordField passField = new PasswordField();
         Button btnLogin = new Button("Login");
