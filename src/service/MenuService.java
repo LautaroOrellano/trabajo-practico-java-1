@@ -52,32 +52,54 @@ public class MenuService {
         System.out.println("--------------------------");
 
         String name, lastName, email, password;
+        String nameRegex = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$"; // Solo letras y espacios
 
         do {
             System.out.println("Ingrese su nombre: ");
             name = scanner.nextLine().trim();
-            if (name.isEmpty()) System.out.println("El nombre no puede estar vacío.");
+            if (name.isEmpty()) {
+                System.out.println("El nombre no puede estar vacío.");
+            } else if (!name.matches(nameRegex)) {
+                System.out.println("El nombre solo puede contener letras.");
+                name = ""; // Forzar repetición del bucle
+            }
         } while (name.isEmpty());
 
         do {
             System.out.println("Ingrese su apellido: ");
             lastName = scanner.nextLine().trim();
-            if (lastName.isEmpty()) System.out.println("El apellido no puede estar vacío.");
+            if (lastName.isEmpty()) {
+                System.out.println("El apellido no puede estar vacío.");
+            } else if (!lastName.matches(nameRegex)) {
+                System.out.println("El apellido solo puede contener letras.");
+                lastName = "";
+            }
         } while (lastName.isEmpty());
 
         do {
             System.out.println("Ingrese su email: ");
             email = scanner.nextLine().trim();
-            if (email.isEmpty()) System.out.println("El email no puede estar vacío.");
+            if (email.isEmpty()) {
+                System.out.println("El email no puede estar vacío.");
+            } else if (!email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
+                System.out.println("El formato del email no es válido.");
+                email = "";
+            }
         } while (email.isEmpty());
 
         do {
             System.out.println("Ingrese su password: ");
             password = scanner.nextLine().trim();
-            if (password.isEmpty()) System.out.println("La contraseña no puede estar vacía.");
+            if (password.isEmpty()) {
+                System.out.println("La contraseña no puede estar vacía.");
+            } else if (password.length() < 6) {
+                System.out.println("La contraseña debe tener al menos 6 caracteres.");
+                password = "";
+            }
         } while (password.isEmpty());
 
         return new Customer(name, lastName, email, password);
+
     }
 
     public User showMenuLogin(Scanner scanner, AuthService authManager) {

@@ -44,6 +44,7 @@ public class EcommerceApp {
 
                     if (user != null) {
                         authManager.register(user);
+                        userRepository.add(user);
                         System.out.println("\nRegistro exitoso!!. Ya puede iniciar sesion");
                     }
                     user = null;

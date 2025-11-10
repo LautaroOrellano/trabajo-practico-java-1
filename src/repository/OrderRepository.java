@@ -155,14 +155,28 @@ public class OrderRepository implements IRepository<Order> {
     private Order fromJson(JSONObject json) throws JSONException {
         int customerId = json.getInt("customerId");
 
+        // Instancia del repositorio de productos para reconstruirlos
+        ProductRepository productRepository = new ProductRepository();
+
         // Reconstruir lista de CartItem desde JSON
         List<CartItem> itemsList = new ArrayList<>();
         JSONArray itemsArray = json.getJSONArray("productsList");
         for (int i = 0; i < itemsArray.length(); i++) {
             JSONObject itemObj = itemsArray.getJSONObject(i);
-            Product p = new Product();
-            p.setId(itemObj.getInt("id"));
+            int productId = itemObj.getInt("id");
             int quantity = itemObj.getInt("quantity");
+
+            // 🔹 Buscar el producto real por ID
+            Product p = productRepository.findById(productId)
+                    .orElseGet(() -> {
+                        // Si no lo encuentra, crear un dummy para evitar nulls
+                        Product dummy = new Product();
+                        dummy.setId(productId);
+                        dummy.setName("Producto desconocido");
+                        dummy.setPrice(0.0);
+                        return dummy;
+                    });
+
             itemsList.add(new CartItem(p, quantity));
         }
 
@@ -172,6 +186,7 @@ public class OrderRepository implements IRepository<Order> {
         order.setNumOrder(json.getString("numOrder"));
         order.setStatus(Status.valueOf(json.getString("status")));
         order.setLocalDateTime(LocalDateTime.parse(json.getString("localDateTime")));
+        order.setTotalPrice(json.getDouble("totalPrice"));
 
         // Mantener el ID original
         try {
@@ -180,7 +195,7 @@ public class OrderRepository implements IRepository<Order> {
             idField.set(order, json.getInt("id"));
         } catch (Exception ignored) {}
 
-        order.setTotalPrice(json.getDouble("totalPrice"));
         return order;
     }
+
 }

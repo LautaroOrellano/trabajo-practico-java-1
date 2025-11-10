@@ -4,7 +4,7 @@
         "name": "Teclado Mecánico RGB",
         "description": "Teclado mecánico con switches rojos y retroiluminación RGB personalizable.",
         "id": 1,
-        "stock": 0
+        "stock": 4
     },
     {
         "price": 89.5,
@@ -18,42 +18,42 @@
         "name": "Auriculares HyperX Cloud II",
         "description": "Auriculares con sonido envolvente 7.1 y micrófono desmontable.",
         "id": 3,
-        "stock": 2
+        "stock": 10
     },
     {
         "price": 235.75,
         "name": "Monitor Samsung 27''",
         "description": "Monitor LED Full HD de 27 pulgadas con 75Hz y panel IPS.",
         "id": 4,
-        "stock": 0
+        "stock": 10
     },
     {
         "price": 289.99,
         "name": "Silla Gamer Reclinable",
         "description": "Silla ergonómica con apoyabrazos ajustables y respaldo reclinable hasta 180°.",
         "id": 5,
-        "stock": 0
+        "stock": 10
     },
     {
         "price": 29.99,
         "name": "Alfombrilla XXL",
         "description": "Mousepad extendido antideslizante con bordes reforzados y base de goma.",
         "id": 6,
-        "stock": 7
+        "stock": 10
     },
     {
         "price": 179.49,
         "name": "Micrófono USB Blue Yeti",
         "description": "Micrófono profesional USB con patrones polares ajustables y control de ganancia.",
         "id": 7,
-        "stock": 3
+        "stock": 10
     },
     {
         "price": 99.99,
         "name": "Webcam Logitech C920",
         "description": "Webcam Full HD 1080p con enfoque automático y micrófonos estéreo.",
         "id": 8,
-        "stock": 5
+        "stock": 10
     },
     {
         "price": 139.99,
@@ -67,6 +67,6 @@
         "name": "GPU NVIDIA RTX 4070",
         "description": "Tarjeta gráfica con 12GB GDDR6X, soporte DLSS 3 y Ray Tracing.",
         "id": 10,
-        "stock": 4
+        "stock": 10
     }
 ]
