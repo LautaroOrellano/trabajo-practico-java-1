@@ -1,18 +1,38 @@
-[{
-    "localDateTime": "2025-11-09T01:38:43.280209800",
-    "numOrder": "#000002",
-    "productsList": [
-        {
+[
+    {
+        "localDateTime": "2025-11-10T09:34:40.915577800",
+        "numOrder": "#000001",
+        "productsList": [{
+            "quantity": 4,
+            "id": 2
+        }],
+        "totalPrice": 358,
+        "customerId": 1,
+        "id": 1,
+        "status": "PENDING"
+    },
+    {
+        "localDateTime": "2025-11-10T09:37:43.516112800",
+        "numOrder": "#000002",
+        "productsList": [{
             "quantity": 1,
-            "id": 5
-        },
-        {
-            "quantity": 2,
-            "id": 3
-        }
-    ],
-    "totalPrice": 589.79,
-    "customerId": 3,
-    "id": 2,
-    "status": "PENDING"
-}]
+            "id": 2
+        }],
+        "totalPrice": 89.5,
+        "customerId": 1,
+        "id": 2,
+        "status": "PENDING"
+    },
+    {
+        "localDateTime": "2025-11-10T10:09:55.401595800",
+        "numOrder": "#000003",
+        "productsList": [{
+            "quantity": 3,
+            "id": 1
+        }],
+        "totalPrice": 359.96999999999997,
+        "customerId": 1,
+        "id": 3,
+        "status": "PENDING"
+    }
+]
