@@ -6,10 +6,7 @@
         "id": 1,
         "type": "CUSTOMER",
         "email": "lautaro@gmail.com",
-        "cart": {"items": [{
-            "quantity": 4,
-            "id": 3
-        }]}
+        "cart": {"items": []}
     },
     {
         "lastName": "Orellano",
@@ -27,6 +24,24 @@
         "id": 3,
         "type": "ADMIN",
         "email": "admin@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "orellano",
+        "password": "123456",
+        "name": "lautaro",
+        "id": 4,
+        "type": "CUSTOMER",
+        "email": "fuerte@gmail.com",
+        "cart": {"items": []}
+    },
+    {
+        "lastName": "orellano",
+        "password": "123456",
+        "name": "lautaro",
+        "id": 4,
+        "type": "CUSTOMER",
+        "email": "fuerte@gmail.com",
         "cart": {"items": []}
     }
 ]
