@@ -2,13 +2,13 @@ package service;
 
 import models.Product;
 import exceptions.ProductNotFoundException;
-import interfaces.IProducManager;
+import interfaces.IProducService;
 import interfaces.IRepository;
 import repository.ProductRepository;
 
 import java.util.List;
 
-public class ProductService implements IProducManager {
+public class ProductService implements IProducService {
     private IRepository<Product> productRepository;
 
     public ProductService(ProductRepository repository) {

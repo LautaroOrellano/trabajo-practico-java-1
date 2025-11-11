@@ -5,7 +5,7 @@ import models.Cart;
 import models.CartItem;
 import models.Product;
 import exceptions.ItemOutOfStockException;
-import interfaces.IUserManager;
+import interfaces.IUserService;
 import models.users.Admin;
 import models.users.Customer;
 import models.users.User;
@@ -14,7 +14,7 @@ import repository.UserRepository;
 
 import java.util.List;
 
-public class UserService implements IUserManager {
+public class UserService implements IUserService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
 

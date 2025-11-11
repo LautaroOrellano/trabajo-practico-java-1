@@ -5,7 +5,7 @@ import models.Product;
 
 import java.util.List;
 
-public interface IUserManager {
+public interface IUserService {
 
     void createUser(String name, String lastName, String email, String password, String rol);
     void getAllUsers();

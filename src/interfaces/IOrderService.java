@@ -3,7 +3,7 @@ package interfaces;
 
 import models.users.User;
 
-public interface IOrderManager {
+public interface IOrderService {
 
     void generateOrderFromCart(User user);
     void getAllOrderByUser(User user);

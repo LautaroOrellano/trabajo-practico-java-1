@@ -4,7 +4,7 @@ import models.Product;
 
 import java.util.List;
 
-public interface IProducManager {
+public interface IProducService {
 
     void createProduct(String name, String description, double price,int stock);
     void getAllProducts();

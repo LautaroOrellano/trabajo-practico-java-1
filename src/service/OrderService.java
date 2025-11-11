@@ -8,7 +8,7 @@ import models.Order;
 import models.Product;
 import models.users.User;
 import exceptions.ItemOutOfStockException;
-import interfaces.IOrderManager;
+import interfaces.IOrderService;
 import repository.OrderRepository;
 import repository.ProductRepository;
 import repository.UserRepository;
@@ -16,10 +16,9 @@ import java.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
-public class OrderService implements IOrderManager {
+public class OrderService implements IOrderService {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
