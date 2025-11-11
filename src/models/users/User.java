@@ -28,8 +28,6 @@ public abstract class User {
         this.cart = new Cart();
     }
 
-    public abstract void darseDeBaja();
-
     // Getters & Setters
     public static int getAutoIncrement() {
         return AUTO_INCREMENT;

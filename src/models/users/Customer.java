@@ -55,11 +55,6 @@ public class Customer extends User {
     }
 
     @Override
-    public void darseDeBaja() {
-
-    }
-
-    @Override
     public String toString() {
         return "Customer{" +
                 "dni=" + dni +
