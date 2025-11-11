@@ -34,17 +34,5 @@
         "customerId": 1,
         "id": 3,
         "status": "PENDING"
-    },
-    {
-        "localDateTime": "2025-11-10T19:06:07.899252200",
-        "numOrder": "#000004",
-        "productsList": [{
-            "quantity": 4,
-            "id": 1
-        }],
-        "totalPrice": 479.96,
-        "customerId": 1,
-        "id": 4,
-        "status": "PENDING"
     }
 ]
