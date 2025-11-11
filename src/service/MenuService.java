@@ -139,10 +139,10 @@ public class MenuService {
         System.out.println("[7] Buscar orden por id      |");
         System.out.println("[8] Eliminar una orden       |");
         System.out.println("[9] Crear un usuario         |");
-        System.out.println("[10] Buscar usuario por id    |");
-        System.out.println("[11] Ver todo los usuarios    |");
-        System.out.println("[12] Modificar un usuario     |");
-        System.out.println("[13] Eliminar un usuario      |");
+        System.out.println("[10] Buscar usuario por id   |");
+        System.out.println("[11] Ver todo los usuarios   |");
+        System.out.println("[12] Modificar un usuario    |");
+        System.out.println("[13] Eliminar un usuario     |");
         System.out.println("[0] Exit                     |");
         System.out.println("------------------------------");
     }
@@ -223,9 +223,24 @@ public class MenuService {
                 scanner.nextLine();
                 productManager.deleteProduct(id);
             }
-            //case 6 -> userManager.clearMeCart();
-            case 7 -> orderManager.searchOrder();
-            case 8 -> orderManager.removeOrder();
+            case 6 -> {
+                // Traer todas las ordenes
+                orderManager.getAllOrder();
+            }
+            case 7 -> {
+                // Traer orden por id
+                System.out.println("Id de la orden a buscar");
+                int id = scanner.nextInt();
+                scanner.nextLine();
+                orderManager.getOrderByOrderId(id);
+            }
+            case 8 -> {
+                // Eliminar orden por id
+                System.out.println("Id de la orden a eliminar");
+                int id = scanner.nextInt();
+                scanner.nextLine();
+                orderManager.removeOrder(id);
+            }
             case 9 -> userManager.getAllUsers();
             case 10 -> userManager.searchUserById(1);
             case 11 -> userManager.searchUserById(1);
@@ -393,7 +408,7 @@ public class MenuService {
                     orderManager.getMeOrder(user);
             case 9 ->
                     // Ver todas mis ordenes de compras
-                    orderManager.getAllOrder(user);
+                    orderManager.getAllOrderByUser(user);
             case 0 ->
                     // Salir del programa
                     System.out.printf("Hasta pronto");
