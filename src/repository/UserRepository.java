@@ -53,14 +53,10 @@ public class UserRepository implements IRepository<User> {
     }
 
     @Override
-    public void getAllCustom() {
-
-    }
+    public void getAllCustom() {}
 
     @Override
-    public void showAllWithIndex(){
-
-    }
+    public void showAllWithIndex(){}
 
     public void update(User updatedUser) {
         for (int i = 0; i < users.size(); i++) {

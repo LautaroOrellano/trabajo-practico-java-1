@@ -19,5 +19,14 @@
         "type": "ADMIN",
         "email": "lauta@gmail.com",
         "cart": {"items": []}
+    },
+    {
+        "lastName": "admin",
+        "password": "123456",
+        "name": "utn",
+        "id": 3,
+        "type": "ADMIN",
+        "email": "admin@gmail.com",
+        "cart": {"items": []}
     }
 ]

@@ -1,10 +1,14 @@
 package service;
 
+import enums.Rol;
 import models.Cart;
 import models.CartItem;
 import models.Product;
 import exceptions.ItemOutOfStockException;
 import interfaces.IUserManager;
+import models.users.Admin;
+import models.users.Customer;
+import models.users.User;
 import repository.ProductRepository;
 import repository.UserRepository;
 
@@ -19,8 +23,51 @@ public class UserService implements IUserManager {
         this.productRepository = productRepository;
     }
 
+    public void createUser(String name, String lastName, String email, String password, String rolInput) {
+        if (name == null || name.isEmpty() || lastName == null || lastName.isEmpty() ||
+                email == null || email.isEmpty() || password == null || password.isEmpty() ||
+            rolInput == null || rolInput.isEmpty()) {
+            System.out.println("Datos incorrectos para crear el producto. ");
+            return;
+        }
+
+        Rol rol;
+        try {
+            // Convertimos el string a mayúsculas para que no importe cómo lo escriben
+            rol = Rol.valueOf(rolInput.trim().toUpperCase());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Rol inválido. Debe ser 'ADMIN' o 'CUSTOMER'.");
+            return;
+        }
+
+        User user;
+        if (rol == Rol.ADMIN) {
+            user = new Admin(name, lastName, email, password);
+        } else {
+            user = new Customer(name, lastName, email, password);
+        }
+
+        userRepository.add(user);
+        System.out.println("Producto " + name + " creado con exito");
+    }
+
     public void getAllUsers() {
-        userRepository.getAll();
+        List<User> users = userRepository.getAll();
+
+        if (users.isEmpty()) {
+            System.out.println("No hay usuarios para mostrar.");
+            return;
+        }
+
+        users.forEach(u -> {
+            System.out.println("======Usuario " + u.getName() + "======");
+            System.out.println("Id: " + u.getId());
+            System.out.println("Nombre: " + u.getName());
+            System.out.println("Apellido: " + u.getLastName());
+            System.out.println("Email: " + u.getEmail());
+            System.out.println("Password: " + u.getPassword());
+            System.out.println("========================");
+        });
     }
 
     public void searchUserById(int id) {
@@ -31,11 +78,30 @@ public class UserService implements IUserManager {
                 );
     }
 
+    public void updateUser(int id, String name, String lastName, String email, String password) {
+        User found = userRepository.getAll()
+                .stream()
+                .filter(u -> u.getId() == id)
+                .findFirst()
+                .orElse(null);
+
+        if (found != null) {
+            found.setName(name);
+            found.setLastName(lastName);
+            found.setEmail(email);
+            found.setPassword(password);
+            System.out.println("Usuario actualizado con exito!");
+            userRepository.update(found);
+        } else {
+            System.out.println("Usuario con ID: " + id + " no encontrado");
+        }
+    }
+
     public void deleteUserById(int id) {
         userRepository.removeById(id);
     }
 
-    // Metodos logica de carrito
+    // ----------- Metodos logica de carrito -----------------
     public void addProductToCart(int userId, Product product, int quantity) {
         userRepository.findById(userId)
                 .ifPresentOrElse(user -> {

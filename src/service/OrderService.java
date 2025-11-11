@@ -16,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 public class OrderService implements IOrderManager {
@@ -188,7 +189,13 @@ public class OrderService implements IOrderManager {
     }
 
     public void removeOrder(int id) {
-        orderRepository.removeById(id);
+        boolean removed = orderRepository.removeById(id);
+
+        if (removed) {
+            System.out.println("Orden " + id + " eliminada correctamente");
+        } else {
+            System.out.println("No existe una orden con ese id");
+        }
     }
 
     // ----------------- MÉTODOS FX -----------------

@@ -67,11 +67,6 @@ public class ProductService implements IProducManager {
         productRepository.getAll().forEach(System.out::println);
     }
 
-    // Devuelvo una lista de todos los productos
-    public List<Product> getProducts() {
-        return productRepository.getAll();
-    }
-
     // Muestro una lista de producto customizada
     @Override
     public void getAllProductsCustom() {
@@ -114,6 +109,7 @@ public class ProductService implements IProducManager {
             found.setDescription(description);
             found.setStock(stock);
             System.out.println("Producto actualizado con exito!");
+            productRepository.update(found);
         } else {
             System.out.println("Prodcuto con ID: " + id + " no encontrado");
         }
@@ -143,5 +139,8 @@ public class ProductService implements IProducManager {
         return productRepository.findByName(name).orElse(null);
     }
 
-
+    // Devuelvo una lista de todos los productos
+    public List<Product> getProducts() {
+        return productRepository.getAll();
+    }
 }

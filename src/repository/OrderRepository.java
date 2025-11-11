@@ -66,7 +66,11 @@ public class OrderRepository implements IRepository<Order> {
 
     @Override
     public boolean removeById(int id) {
-        return orders.removeIf(o -> o.getId() == id);
+        boolean removed = orders.removeIf(o -> o.getId() == id);
+        if (removed) {
+            saveToJson();
+        }
+        return removed;
     }
 
     private void loadFromJson() {
