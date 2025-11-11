@@ -1,7 +1,7 @@
-# 🛒 Ecommerce Java Puro
+# 🛒 Ecommerce en Java Puro
 
 **Descripción:**  
-Proyecto de e-commerce desarrollado en **Java puro**, utilizando **JSON** como sistema de persistencia. Permite manejar usuarios, productos, carritos de compra y órdenes de manera dinámica y segura.
+Proyecto e-commerce desarrollado en **Java**, utilizando **JSON** como sistema de persistencia. Permite manejar usuarios, productos, carritos de compra y órdenes de manera dinámica y segura.
 
 ---
 
@@ -27,7 +27,7 @@ Proyecto de e-commerce desarrollado en **Java puro**, utilizando **JSON** como s
 
 ## 🎯 Objetivo del proyecto
 
-Simular un sistema de **e-commerce funcional**, reforzando conceptos de:  
+Simular un sistema de **e-commerce funcional** dinamico, reforzando conceptos de:  
 - POO  
 - Manejo de colecciones y listas  
 - Persistencia con JSON  
@@ -50,6 +50,13 @@ Simular un sistema de **e-commerce funcional**, reforzando conceptos de:
 
 ## 📌 Notas
 
-- Los productos agregados al carrito se almacenan temporalmente hasta generar la orden.  
+- Los productos agregados al carrito se almacenan hasta generar la orden.  
 - Se maneja stock y validaciones de entrada para asegurar consistencia de datos.  
-- Las órdenes se generan automáticamente en archivos JSON con respaldo. 
+- Las órdenes se generan automáticamente en archivos JSON con respaldo.
+
+---
+
+## 🗂️ Diagrama UML
+
+<img width="1487" height="818" alt="uml_tp1_utn" src="https://github.com/user-attachments/assets/b00198c2-9e5b-417d-a1bb-4ceaf0e5a066" />
+
