@@ -1,10 +1,10 @@
-package ui;
+package ux;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import ui.controllers.LoginController;
+import ux.controllers.LoginController;
 
 public class MainFX extends Application {
 
