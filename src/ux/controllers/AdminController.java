@@ -1,4 +1,4 @@
-package ui.controllers;
+package ux.controllers;
 
 import models.Product;
 import models.users.User;
@@ -9,7 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import ui.MainFX;
+import ux.MainFX;
 
 public class AdminController {
 

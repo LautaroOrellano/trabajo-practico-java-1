@@ -1,7 +1,5 @@
-package ui.controllers;
+package ux.controllers;
 
-import models.users.Admin;
-import models.users.Customer;
 import models.users.User;
 import repository.OrderRepository;
 import repository.ProductRepository;
@@ -18,7 +16,7 @@ import repository.UserRepository;
 import service.OrderService;
 import service.ProductService;
 import service.UserService;
-import ui.MainFX;
+import ux.MainFX;
 
 public class LoginController {
 
